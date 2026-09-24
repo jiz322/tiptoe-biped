@@ -1,0 +1,58 @@
+{
+    "url": "https://cad.onshape.com/documents/b6fa6c6551b838ca1aec2562/w/9944cc42184f2fdfd8c41b59/e/0c19493649048a194f04088e",
+    "output_format": "urdf",
+    "package_name": "bigthigh",
+
+    "joint_properties": {
+        "*": {
+            "friction": 0.05
+        },
+        "dof_hip_pitch1": {
+            "max_effort": 17.0,
+            "max_velocity": 40.3,
+            "friction": 0.08,
+            "limits": [-0.52, 2.09]
+        },
+        "dof_hip_pitch2": {
+            "max_effort": 17.0,
+            "max_velocity": 40.3,
+            "friction": 0.08,
+            "limits": [-0.52, 2.09]
+        },
+        "dof_hip_roll1": {
+            "max_effort": 6.0,
+            "max_velocity": 40.3,
+            "friction": 0.05,
+            "limits": [-0.17, 0.79]
+        },
+        "dof_hip_roll2": {
+            "max_effort": 6.0,
+            "max_velocity": 40.3,
+            "friction": 0.05,
+            "limits": [-0.17, 0.79]
+        },
+        "dof_knee1": {
+            "max_effort": 23.2,
+            "max_velocity": 40.3,
+            "friction": 0.10,
+            "limits": [-0.35, 1.40]
+        },
+        "dof_knee2": {
+            "max_effort": 23.2,
+            "max_velocity": 40.3,
+            "friction": 0.10,
+            "limits": [-0.35, 1.40]
+        },
+    },
+
+    "geom_properties": {
+        "foot_*": {
+            "collision": {
+                "mu1": "1.5",
+                "mu2": "1.2"
+            }
+        }
+    },
+
+    "set_zero_mass_to_fixed": true
+}

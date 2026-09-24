@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this hardware design, code, dataset or the research log, please cite it as below."
+title: "TipToe: an open point-foot biped and its sim2real research log"
+authors:
+  - name: "jiz322"
+type: software
+version: 0.1.0
+date-released: 2026-09-24
+repository-code: "https://github.com/jiz322/tiptoe-biped"
+license: MIT
+keywords:
+  - biped
+  - point-foot
+  - sim2real
+  - reinforcement learning
+  - Isaac Lab
+  - open hardware
+  - RobStride
+abstract: >
+  A 6-DOF point-foot biped built for about 5500 CNY from four RobStride RS01,
+  two EL05, a Raspberry Pi 5 and printed parts, with a belt-driven knee. Trained
+  with PPO in Isaac Lab and deployed through a Python CAN stack. The repository
+  contains the hardware files, the training environment, the deploy stack, the
+  hardware recordings, and a retrospective of every fix needed for the first
+  6 s free-standing balance, built by one person working with an AI coding agent.

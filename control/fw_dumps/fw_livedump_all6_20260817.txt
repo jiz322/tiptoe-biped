@@ -1,0 +1,127 @@
+[param_read] SocketCAN can0 (CAN2SPI)
+
+motor 101:
+    VBUS           +30.275 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +23.000 A
+    limit_spd      +44.000 rad/s
+    limit_torque   +17.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +20.000
+    mechPos        -0.001 rad
+    mechVel        -0.068 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.100
+    spd_ki         +0.020
+    spd_kp         +5.000
+    spd_ref        +0.000
+
+motor 102:
+    VBUS           +30.225 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +23.000 A
+    limit_spd      +44.000 rad/s
+    limit_torque   +17.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +20.000
+    mechPos        +0.009 rad
+    mechVel        -0.027 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.100
+    spd_ki         +0.020
+    spd_kp         +5.000
+    spd_ref        +0.000
+
+motor 103:
+    VBUS           +30.633 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +11.000 A
+    limit_spd      +50.000 rad/s
+    limit_torque   +6.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +10.000
+    mechPos        -0.005 rad
+    mechVel        +0.000 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.500
+    spd_ki         +0.020
+    spd_kp         +6.000
+    spd_ref        +0.000
+
+motor 104:
+    VBUS           +30.650 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +23.000 A
+    limit_spd      +44.000 rad/s
+    limit_torque   +17.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +20.000
+    mechPos        +0.001 rad
+    mechVel        -0.103 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.100
+    spd_ki         +0.020
+    spd_kp         +5.000
+    spd_ref        +0.000
+
+motor 105:
+    VBUS           +30.500 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +23.000 A
+    limit_spd      +44.000 rad/s
+    limit_torque   +17.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +20.000
+    mechPos        -0.759 rad
+    mechVel        -0.106 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.100
+    spd_ki         +0.020
+    spd_kp         +5.000
+    spd_ref        +0.000
+
+motor 106:
+    VBUS           +30.457 V
+    cur_filt_gain  +0.100
+    cur_ki         +0.016
+    cur_kp         +0.125
+    faultSta       0 (no fault)
+    iq_ref         +0.000
+    iqf            +0.000 A
+    limit_cur      +11.000 A
+    limit_spd      +50.000 rad/s
+    limit_torque   +6.000 Nm
+    loc_kp         +30.000
+    loc_ref_filt_gain +10.000
+    mechPos        -0.000 rad
+    mechVel        +0.000 rad/s
+    run_mode       0 (operation/MIT)
+    spd_filt_gain  +0.500
+    spd_ki         +0.020
+    spd_kp         +6.000
+    spd_ref        +0.000

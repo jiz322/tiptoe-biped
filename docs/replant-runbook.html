@@ -1,0 +1,410 @@
+<title>Replant Runbook</title>
+<style>
+  :root {
+    --bg: #F6F7F6;
+    --surface: #FFFFFF;
+    --surface2: #EEF1EF;
+    --ink: #1C2421;
+    --ink2: #55605B;
+    --line: #D8DDDA;
+    --accent: #0E6E62;
+    --accent-ink: #0A554C;
+    --warn-bg: #FBF3E4;
+    --warn-edge: #B45309;
+    --warn-ink: #7C3D07;
+    --gate-bg: #FAECEC;
+    --gate-edge: #A33434;
+    --gate-ink: #7E2626;
+    --ok: #2E7D5B;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+    --sans: -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151A18;
+      --surface: #1C2320;
+      --surface2: #232B28;
+      --ink: #E4EAE7;
+      --ink2: #93A09A;
+      --line: #313B37;
+      --accent: #4FD8C4;
+      --accent-ink: #7BE4D4;
+      --warn-bg: #2A2318;
+      --warn-edge: #D08A3E;
+      --warn-ink: #E8B87E;
+      --gate-bg: #2A1B1B;
+      --gate-edge: #C96A6A;
+      --gate-ink: #E2A5A5;
+      --ok: #5BBE93;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151A18;
+    --surface: #1C2320;
+    --surface2: #232B28;
+    --ink: #E4EAE7;
+    --ink2: #93A09A;
+    --line: #313B37;
+    --accent: #4FD8C4;
+    --accent-ink: #7BE4D4;
+    --warn-bg: #2A2318;
+    --warn-edge: #D08A3E;
+    --warn-ink: #E8B87E;
+    --gate-bg: #2A1B1B;
+    --gate-edge: #C96A6A;
+    --gate-ink: #E2A5A5;
+    --ok: #5BBE93;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    margin: 0;
+    padding: 2.5rem 1.25rem 6rem;
+    font-size: 16px;
+  }
+  main { max-width: 76ch; margin: 0 auto; }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.2; }
+  h1 {
+    font-family: var(--mono);
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.25rem;
+  }
+  .subtitle { color: var(--ink2); margin: 0 0 0.5rem; }
+  .meta {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    margin: 3rem 0 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--line);
+  }
+  h2 .phase-no { color: var(--accent); }
+  h3 { font-size: 1rem; margin: 1.5rem 0 0.4rem; }
+  p { margin: 0.5rem 0; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--surface2);
+    border-radius: 3px;
+    padding: 0.08em 0.35em;
+  }
+  .est {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink2);
+    font-weight: 400;
+    margin-left: 0.75rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink2);
+    font-weight: 600;
+    padding: 0.4rem 0.75rem 0.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  td {
+    padding: 0.45rem 0.75rem 0.45rem 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td code, th code { background: transparent; padding: 0; }
+  ul, ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  li { margin: 0.3rem 0; }
+  .check { list-style: none; padding-left: 0.2rem; }
+  .check li {
+    padding-left: 1.7rem;
+    position: relative;
+  }
+  .check li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.33em;
+    width: 0.85em; height: 0.85em;
+    border: 1.5px solid var(--ink2);
+    border-radius: 2px;
+  }
+  .callout {
+    border-left: 3px solid var(--warn-edge);
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .callout strong { color: inherit; }
+  .gate {
+    border: 1.5px solid var(--gate-edge);
+    background: var(--gate-bg);
+    color: var(--gate-ink);
+    padding: 0.85rem 1.1rem;
+    border-radius: 6px;
+    margin: 1.25rem 0;
+    font-size: 0.92rem;
+  }
+  .gate .gate-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+  .block h3 { margin-top: 0.25rem; }
+  .feeds {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent-ink);
+    margin-top: 0.6rem;
+  }
+  .kv { font-family: var(--mono); font-size: 0.85rem; }
+  .lbl {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink2);
+    font-weight: 600;
+  }
+  a { color: var(--accent-ink); }
+</style>
+
+<main>
+<h1>Replant Runbook</h1>
+<p class="subtitle">Bench remeasurement &rarr; env recalibration &rarr; replica gate &rarr; retrain, for the big_thigh biped.</p>
+<div class="meta">
+  <span>DATE&nbsp;2026-08-17</span>
+  <span>TARGET&nbsp;rl_env_p6 / rl_env_cfg_p6</span>
+  <span>BUS&nbsp;CAN2SPI (tick 3.6 ms)</span>
+</div>
+
+<div class="gate">
+  <span class="gate-label">Execution status — 2026-08-18 (this plan is now largely DONE)</span>
+  All results live in <a href="replant-report-20260817.html">replant-report-20260817.html</a> —
+  read that, not this, for current numbers. Phase status: <strong>0–7 done</strong>
+  (P7 shipped commit <code>2d0441f</code>: rotor armature ×4 + off-diagonal belt
+  coupling + P5 frictions), <strong>P8 first pass run</strong> (gate moved
+  decisively — hw_matched flips from surviving 6 s to 512/512 pitch-first falls
+  in the hardware's direction; timing spread residual remains, three candidates
+  for it eliminated), <strong>P9 RUNNING</strong> (fresh train, lineage
+  <code>p9_replant</code>, pg-bias DR ±0.10), <strong>P10 pending</strong> before
+  any flight. Plan deviations of note: M3.1 ran as a ballistic probe (no load
+  rig); M3.2 deferred; P6's straightedge became the crawl-pose IMU decomposition;
+  the supine cross-check is physically impossible (Pi on the torso's back) so the
+  deployed IMU trim stays and the policy trains robust to it; the knee belt-off
+  split is downgraded (belt only removable with the thigh) to a stiff-hold A/B
+  (<code>--hold-kp 40</code>).
+</div>
+
+<p>Context: sim trains well, hardware tips forward at ~0.25 s every run. The plant gap is the confirmed cause (hw-matched sim survives 6 s; launch/IMU/DR ruled out). Three things changed our trust model: the CAN2SPI swap invalidated every latency number, the firmware dumps exposed unmodeled filters and limits, and the MIT-mode kd is now known to act on <em>filtered</em> velocity. Today's job: measure the real plant, rebuild the model, and only train once the replica reproduces the fall.</p>
+
+<div class="gate">
+  <span class="gate-label">Master gate — do not skip</span>
+  Do not launch the retrain until the updated replica, driven by a real fall log's policy/commands, <strong>tips forward in &lt;0.5 s the way hardware does</strong> (pitch-initiated, onset ~0.16 s). If the new plant model still survives where hardware dies, the gap is still open — more training buys nothing.
+</div>
+
+<h2>Schedule at a glance</h2>
+<div class="table-wrap"><table>
+<tr><th>Phase</th><th>What</th><th>Est.</th><th>Feeds</th></tr>
+<tr><td>0</td><td>Preflight: freeze, decode fix, telemetry rules</td><td>0.5 h</td><td>everything</td></tr>
+<tr><td>1</td><td>Loop timing (CAN2SPI)</td><td>1.5 h</td><td>cfg &sect;12b delays</td></tr>
+<tr><td>2</td><td>Velocity-filter ID (kd path) + fw A/B</td><td>2 h</td><td>new kd-EMA model / fw fix</td></tr>
+<tr><td>3</td><td>Torque ceiling &amp; speed envelope</td><td>2 h</td><td>saturation / velocity limits</td></tr>
+<tr><td>4</td><td>Step-response re-sysid</td><td>1.5 h</td><td>act_lag refit-or-delete</td></tr>
+<tr><td>5</td><td>Friction &amp; armature bench</td><td>2 h</td><td>friction centrals</td></tr>
+<tr><td>6</td><td>Mass, balance point, init_h</td><td>1 h</td><td>bias DR / IMU zero</td></tr>
+<tr><td>7</td><td>Env &amp; actuator code edits</td><td>2 h</td><td>cfg + belt actuator</td></tr>
+<tr><td>8</td><td>Replica validation gate</td><td>1.5 h</td><td>go / no-go</td></tr>
+<tr><td>9</td><td>Retrain launch</td><td>0.5 h + run</td><td>&mdash;</td></tr>
+<tr><td>10</td><td>Deployment contract re-check</td><td>1 h</td><td>hardware re-entry</td></tr>
+</table></div>
+<p>Phases 1&ndash;6 are independent of each other — reorder freely around rig availability. Phase 7 needs 1&ndash;5; phase 8 needs 7.</p>
+
+<h2><span class="phase-no">Phase 0</span> — Preflight <span class="est">~30 min</span></h2>
+<ul class="check">
+  <li>Git-tag the current state of <code>RL/</code> and <code>control/</code> (e.g. <code>pre-replant-20260817</code>) so every fitted number is attributable to a code state.</li>
+  <li>Verify the driver velocity-decode fix is deployed (the June sysid data carried a &times;1.136 decode error). Spin a joint at a known slow rate against the encoder position derivative; the two must agree to &lt;2%. <strong>If this fails, stop — every measurement today inherits the error.</strong></li>
+  <li>Reply-collision guard: superseded 08-16 (BASELINE_RUNBOOK Phase D) — each motor now replies on its <em>own</em> host id and <code>CAN2SPI_PACING_S = 0.0</code> is the validated config. Check instead that this boot's <code>setup_can0.sh</code> passed its duplicate-reply-id guard (it refuses on duplicates; a swapped-in motor at factory 0xFD would re-create the collisions).</li>
+  <li>Re-dump firmware params for all six motors, not just the two on file — confirm the two knees and both hip pitches match <code>fw_rs01_pitch_knee_20260815.csv</code>, both rolls match the EL05 dump. Per-unit spread in <code>spd_filt_gain</code> / <code>limit_cur</code> matters.</li>
+  <li>Robot on the stand, e-stop tested, spare fuses at hand for the stall tests.</li>
+</ul>
+<div class="callout"><strong>Telemetry ground rules for every phase.</strong> (1) Never use <code>torque_fdb</code> as truth — it carries a ~25&ndash;35 ms filter plus a 0.15 Nm deadband; use commanded <code>iq</code> &times; Kt plus external physics (weights, encoder kinematics) instead. (2) Run Isaac Lab scripts from an activated <code>env_isaaclab</code> shell, not <code>conda run</code> (it buffers stdout and you lose live prints). (3) Log raw timestamps on the host for everything; derive nothing on the fly.</div>
+
+<h2><span class="phase-no">Phase 1</span> — Loop timing on CAN2SPI <span class="est">~1.5 h</span></h2>
+<p>Every number in cfg &sect;12b (action 15 ms, IMU 5&ndash;7 ms, joint 15&ndash;20 ms, "IMU leads encoder by 10 ms") is CAN2USB-era. The joint path was the CAN-bound one, so the skew may have shrunk or inverted.</p>
+
+<div class="block">
+<h3>M1.1 &mdash; Action &rarr; torque onset</h3>
+<p><span class="lbl">Procedure</span> &nbsp;MIT mode, <code>kp=kd=0</code>, command a &tau;<sub>ff</sub> step on one unloaded joint; detect motion onset from the encoder second-difference. Host-timestamp send and onset. N&ge;50 steps, both directions, all three joint types.</p>
+<p><span class="lbl">Record</span> &nbsp;mean, p95, std of send&rarr;onset latency per joint type.</p>
+<p><span class="lbl">Accept</span> &nbsp;p95 spread &lt;1 control step; otherwise investigate jitter before proceeding.</p>
+<p class="feeds">feeds &rarr; dr_action_delay_min/max</p>
+</div>
+
+<div class="block">
+<h3>M1.2 &mdash; IMU vs encoder staleness</h3>
+<p><span class="lbl">Procedure</span> &nbsp;Excite an event both sensors see simultaneously: oscillate hip_pitch by hand with the torso free so the IMU pitches as the encoder moves. Cross-correlate host-side arrival streams (IMU pitch rate vs encoder velocity) to get the relative lag; get absolute lags by pairing with M1.1's clock.</p>
+<p><span class="lbl">Record</span> &nbsp;per-path staleness (ms) and which path leads. Do not assume the old ordering.</p>
+<p class="feeds">feeds &rarr; dr_imu_delay_*, dr_joint_delay_* (min = measured floor rounded up; max = floor + 1 step)</p>
+</div>
+
+<div class="block">
+<h3>M1.3 &mdash; Tick health</h3>
+<p><span class="lbl">Procedure</span> &nbsp;Log 10 min of control-loop timestamps under full 6-motor traffic. Histogram tick duration; count &gt;5 ms outliers and any reply collisions.</p>
+<p><span class="lbl">Accept</span> &nbsp;tick 3.6 ms nominal, &lt;0.1% ticks over 10 ms (one control period).</p>
+</div>
+
+<h2><span class="phase-no">Phase 2</span> — Velocity filter in the kd path <span class="est">~2 h</span></h2>
+<p>Leading fall candidate. Firmware filters velocity before the MIT-mode kd: RS01 <code>spd_filt_gain=0.1</code> (heavy), EL05 <code>spd_filt_gain=0.5</code>. Sim damping acts on instantaneous 500 Hz velocity — an unmodeled phase lag exactly where the balance loop needs margin. Both registers are R/W, so we can either model the filter or remove it.</p>
+
+<div class="block">
+<h3>M2.1 &mdash; Identify the filter corner</h3>
+<p><span class="lbl">Procedure</span> &nbsp;kd-only config (<code>kp=0</code>, kd = deployed value, v_des=0). Backdrive the joint sinusoidally (by hand against a metronome, or with a second motor) at ~0.5 / 1 / 2 / 4 / 8 Hz. Log commanded <code>iq</code> and encoder velocity; fit gain and phase of the damping response vs frequency. The phase rolloff gives the EMA's effective corner — this also pins the firmware update rate the gain applies at, which we currently do not know.</p>
+<p><span class="lbl">Record</span> &nbsp;corner frequency (Hz) and equivalent 500 Hz-rate EMA alpha, per motor type.</p>
+<p class="feeds">feeds &rarr; new spd_filt EMA state in belt_knee_actuator (phase 7)</p>
+</div>
+
+<div class="block">
+<h3>M2.2 &mdash; Firmware A/B: raise the gain instead?</h3>
+<p><span class="lbl">Procedure</span> &nbsp;Write <code>spd_filt_gain</code> to 0.3 / 0.5 / 1.0 on one RS01; repeat a kp+kd step response at each setting. Look for (a) reduced ring lag, (b) any new velocity-noise chatter in the torque (the filter exists for a reason).</p>
+<p><span class="lbl">Decide</span> &nbsp;If a higher gain is clean: fix it in firmware on all four RS01s, and sim needs only the (weaker) residual filter. If chatter appears: keep 0.1 and model it faithfully in sim. Either way the sim and firmware must end today <em>matched</em>.</p>
+</div>
+
+<div class="block">
+<h3>M2.3 &mdash; EL05 position-reference filter</h3>
+<p><span class="lbl">Procedure</span> &nbsp;EL05 carries <code>loc_ref_filt_gain=0.04</code> — a very heavy reference filter of unknown scope. Command a position step in MIT mode (<code>kp</code> nominal, <code>kd=0</code>, &tau;<sub>ff</sub>=0) and compare measured rise against ideal kp response with M1 latency removed. A slow first-order rise &asymp; the filter is live in MIT mode.</p>
+<p><span class="lbl">Note</span> &nbsp;If live, this is probably the physical origin of hip_roll's "most ring, lowest &omega;" act_lag fit — model it as an explicit first-order command filter on hip_roll rather than through act_lag.</p>
+<p class="feeds">feeds &rarr; hip_roll command-path model (phase 7)</p>
+</div>
+
+<h2><span class="phase-no">Phase 3</span> — Torque ceiling &amp; speed envelope <span class="est">~2 h</span></h2>
+<p>The dumps contradict the cfg: RS01 <code>limit_cur=23 A &times; Kt 0.562 = 12.9 Nm</code> with field weakening off (<code>I_FW_MAX=0</code>), vs <code>saturation_effort=17</code> in sim (knee joint-side: ~17.6 vs 23.2 modeled). The 08-14 "no limit binding" check covered <code>limit_torque</code>, not the current clamp. EL05 is fine (11 A &times; 0.68 = 7.5 &ge; 6).</p>
+
+<div class="block">
+<h3>M3.1 &mdash; Stall ceiling (RS01)</h3>
+<p><span class="lbl">Procedure</span> &nbsp;Lock the output through a lever on a load cell (or hang calibrated weights). Ramp &tau;<sub>ff</sub> 0 &rarr; 17 Nm over ~5 s. Record where measured torque plateaus. Keep bursts &lt;3 s, rest 60 s between; watch <code>motorTemp</code>.</p>
+<p><span class="lbl">Accept</span> &nbsp;plateau within 10% of either 12.9 (current-clamped) or 17 (command-clamped) — ambiguous results mean the load cell setup is bad, redo.</p>
+<p class="feeds">feeds &rarr; saturation_effort (hip_pitch, knee &times;30/22)</p>
+</div>
+
+<div class="block">
+<h3>M3.2 &mdash; Torque&ndash;speed corner</h3>
+<p><span class="lbl">Procedure</span> &nbsp;Max-&tau;<sub>ff</sub> spin-up of the unloaded joint; log velocity trajectory. Terminal velocity gives the true no-load corner at the real bus (~31.8 V, not the assumed 30 V); the deceleration of available accel vs speed traces &tau;<sub>max</sub>(v). Note where firmware <code>limit_spd</code> (44 RS01 / 50 EL05) cuts in — sim ignores this clamp entirely.</p>
+<p class="feeds">feeds &rarr; velocity_limit per joint; sanity-check the DC envelope shape</p>
+</div>
+
+<h2><span class="phase-no">Phase 4</span> — Step-response re-sysid <span class="est">~1.5 h</span></h2>
+<p>The act_lag prefilter (&omega;=21/37.9/27.6, &zeta;=0.41/0.80/0.58) was fitted through old-bus latency and filtered telemetry — forensics already concluded &ge;2/3 of it is phantom. It currently teaches the policy to pre-compensate a plant that no longer exists.</p>
+<ul class="check">
+  <li>Re-run the existing sysid step/chirp battery through CAN2SPI with the verified decode (same scripts as the original FRICTION_TUNE / act_lag campaign; reuse <code>data/sysid_replay_policy_log.py</code> infra).</li>
+  <li>Fit order: first subtract the <em>measured</em> M1 transport delay and the M2 velocity/reference filters, then fit whatever 2nd-order lag remains.</li>
+  <li>Decision rule: if the residual rise time is &lt;1 control step, set <code>act_lag_enable=False</code> and let delay + filters carry it. Otherwise refit &omega;/&zeta; and shrink the DR bands (&plusmn;18/&plusmn;30% were sized for uncertainty we no longer have).</li>
+</ul>
+<p class="feeds">feeds &rarr; act_lag_* in cfg &sect;11, dr_act_lag_* in &sect;12a</p>
+
+<h2><span class="phase-no">Phase 5</span> — Friction &amp; armature <span class="est">~2 h</span></h2>
+<p>The cfg calls the current frictions "placeholders pending bench data"; the sysid centrals were fitted through corrupted telemetry. The 0.5&ndash;2&times; DR likely covers reality — today we move the centers, not the bands.</p>
+<ul class="check">
+  <li>Breakaway (static): slow &tau;<sub>ff</sub> ramp from zero until motion; 10 trials per joint, both directions. Median &rarr; <code>friction</code>.</li>
+  <li>Coast-down (viscous + Coulomb): spin to ~15 rad/s, cut torque, log decay. Fit &tau; = &minus;(C·sign(v) + b·v) &rarr; <code>dynamic_friction</code>, <code>viscous_friction</code>.</li>
+  <li>Knee: run belt-off (motor free) then belt-on to separate motor friction from belt drag; the difference belongs in the belt model, not the motor numbers.</li>
+  <li>Armature: from &tau;<sub>ff</sub> step vs initial acceleration on the free motor (I = &tau;/&alpha; with friction subtracted). Check hip_pitch's combined 8.4e-3 approximation against measurement.</li>
+</ul>
+<p class="feeds">feeds &rarr; friction / dynamic_friction / viscous_friction / armature centrals in both actuator factories</p>
+
+<h2><span class="phase-no">Phase 6</span> — Mass, balance point, init_h <span class="est">~1 h</span></h2>
+<ul class="check">
+  <li>Weigh the assembled robot (battery + cables as flown); compare against USD total (<code>_nominal_total_mass</code>). If off &gt;5%, recenter <code>dr_mass_mult</code> rather than widening it.</li>
+  <li>Static balance: stand the robot in the default pose on a straightedge / force plate; find the actual sagittal balance point vs the model's. The known +0.075 static bias exceeds <code>dr_proj_grav_bias_max=0.03</code> — first try to <em>remove</em> it (IMU mounting re-zero, encoder mechanical zeros) and only widen the DR band for whatever residual survives. Prefer fixing hardware over widening sim.</li>
+  <li>init_h: the one obs channel off-distribution (&minus;1.07&sigma;). Measure true base height in the hardware launch pose and either fix the deployed value or widen the sim init distribution to cover it.</li>
+</ul>
+
+<h2><span class="phase-no">Phase 7</span> — Env &amp; actuator edits <span class="est">~2 h</span></h2>
+<p>All edits in <code>rl_env_cfg_p6.py</code> and <code>belt_knee_actuator.py</code>. Touch nothing in the reward/curriculum sections — one experimental variable: the plant.</p>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>Now</th><th>New source</th></tr>
+<tr><td><code>dr_action_delay_min/max</code></td><td>1 / 2</td><td>M1.1</td></tr>
+<tr><td><code>dr_imu_delay_*</code>, <code>dr_joint_delay_*</code></td><td>1/1, 2/2</td><td>M1.2 (incl. lead order)</td></tr>
+<tr><td><code>act_lag_*</code>, <code>dr_act_lag_*</code></td><td>&omega; 21/37.9/27.6</td><td>M1+M2-corrected refit (P4), possibly disabled</td></tr>
+<tr><td><em>new</em> kd velocity EMA</td><td>absent</td><td>M2.1 corner (or firmware fix from M2.2)</td></tr>
+<tr><td><em>new</em> hip_roll ref filter</td><td>absent</td><td>M2.3 (only if live in MIT mode)</td></tr>
+<tr><td><code>saturation_effort</code> hp / knee</td><td>17 / 23.2</td><td>M3.1</td></tr>
+<tr><td><code>velocity_limit</code> all</td><td>28 / 27.5 / 20</td><td>M3.2 (incl. <code>limit_spd</code> clamp if reached)</td></tr>
+<tr><td><code>friction</code> / <code>dynamic_friction</code> / <code>viscous_friction</code> / <code>armature</code></td><td>sysid placeholders</td><td>P5</td></tr>
+<tr><td><code>dr_proj_grav_bias_max</code></td><td>0.03</td><td>P6 residual after re-zero</td></tr>
+</table></div>
+<p>Implementation notes for the kd-EMA: the filter state lives per-joint inside <code>BeltKneeDCMotor.compute()</code> (and the plain DCMotor path for hip_roll), advanced at the identified firmware rate, and the knee's belt-drag term <code>&minus;kd·c·q̇_hp</code> must use the <em>same filtered</em> hip velocity the firmware sees — filtering only the knee's own velocity would model half the effect. Reset the state in <code>reset()</code>. Add a per-episode DR multiplier on the filter alpha (&plusmn;20&ndash;30%) since per-unit gains may differ (P0 dump check).</p>
+
+<h2><span class="phase-no">Phase 8</span> — Replica validation gate <span class="est">~1.5 h</span></h2>
+<p>Cheapest possible test of the whole day's work — no training run needed.</p>
+<ul class="check">
+  <li>Replay the calm logs and the 26 fall logs through the updated replica (<code>data/sysid_replay_policy_log.py</code>). Teacher-forcing RMSE must improve on calm logs vs the old model (baseline: knee TF 0.0581).</li>
+  <li>Run the hw-matched sim launch with the updated plant. <strong>Pass:</strong> it tips forward pitch-first in &lt;0.5 s, onset near 0.16 s, like all 26 hardware runs. <strong>Fail:</strong> it still balances &rarr; the gap is elsewhere; return to hypothesis hunting (the "un-caught launch transient" question is still open) instead of training.</li>
+</ul>
+<div class="gate">
+  <span class="gate-label">Gate G1</span>
+  Fall reproduced in replica &rarr; proceed to Phase 9. Not reproduced &rarr; stop; do not spend a training cycle on an unvalidated plant.
+</div>
+
+<h2><span class="phase-no">Phase 9</span> — Retrain launch <span class="est">~30 min + run</span></h2>
+<ul class="check">
+  <li>Fresh run, not a resume (actuator model changed; checkpoints are incompatible anyway).</li>
+  <li>Hyperparameter trap 1: a fresh run reads cfg defaults — re-check entropy coefficient explicitly (the G-series regression came from resume silently reverting to 3&times; the parent's entropy).</li>
+  <li>Hyperparameter trap 2: <code>desired_kl=0.003</code> pins the adaptive LR at rsl_rl's 1e-5 floor. Decide the KL target consciously for a from-scratch run.</li>
+  <li>First-iteration sanity (from the cfg dev notes): <code>actuators["hip_roll"].stiffness.std() &gt; 0</code> after one reset (per-env DR write path alive); act_lag banner matches intent; <code>diagnostics/clip_fraction</code> and <code>raw_action_p99_abs</code> not exploding.</li>
+  <li>Watch in the first 200 iters: <code>knee_sat_ema_max</code> riding its fence, <code>idle_toe_z_p10</code> vs <code>swing_clearance_zero_m=0.075</code> (re-calibrate per the cfg rule if stance height shifts), and the DR&ndash;eplen correlations for the new delay/filter axes.</li>
+</ul>
+
+<h2><span class="phase-no">Phase 10</span> — Deployment contract re-check <span class="est">~1 h</span></h2>
+<p>Before the new policy ever touches hardware:</p>
+<ul class="check">
+  <li><code>config.py</code> REAL_KP/REAL_KD must equal the sim gains through the belt mapping — knee <code>REAL_KP=16</code> is known-stale. Recompute the knee motor-space gains from sim joint-space kp=8/kd=0.5 via the documented G, c transform and update.</li>
+  <li>Obs normalizer: confirm <code>policy.py</code> loads the rsl_rl normalizer keys (the pre-08-06 raw-obs bug must stay dead) — diff exported keys against the checkpoint.</li>
+  <li>Bridge LPF aliasing item from the 08-14 audit: resolve or consciously accept before flight.</li>
+  <li>If M2.2 changed <code>spd_filt_gain</code> in firmware: verify all four RS01s carry the new value (re-dump) and that the sim trained against the matching filter.</li>
+  <li>Hardware re-entry protocol: hang test (gains/direction sanity) &rarr; supported stand &rarr; free stand, full telemetry logging from the first trial.</li>
+</ul>
+
+<h2>Appendix — firmware facts referenced above</h2>
+<div class="table-wrap"><table>
+<tr><th>Register</th><th>RS01 (pitch/knee)</th><th>EL05 (roll)</th><th>Why it matters</th></tr>
+<tr><td><code>spd_filt_gain</code></td><td>0.1</td><td>0.5</td><td>velocity EMA ahead of MIT kd — unmodeled phase lag (P2)</td></tr>
+<tr><td><code>loc_ref_filt_gain</code></td><td>&mdash;</td><td>0.04</td><td>heavy position-reference filter, scope unknown (M2.3)</td></tr>
+<tr><td><code>limit_cur</code> &times; <code>Kt</code></td><td>23 A &times; 0.562 = 12.9 Nm</td><td>11 A &times; 0.68 = 7.5 Nm</td><td>RS01 physical ceiling possibly &lt; the 17 Nm modeled (M3.1)</td></tr>
+<tr><td><code>limit_torque</code></td><td>17</td><td>6</td><td>command clip only — not the physics clip</td></tr>
+<tr><td><code>limit_spd</code></td><td>44 rad/s</td><td>50 rad/s</td><td>firmware speed clamp sim ignores (M3.2)</td></tr>
+<tr><td><code>I_FW_MAX</code></td><td>0</td><td>0</td><td>no field weakening — current limit is the hard ceiling</td></tr>
+<tr><td><code>VBUS</code></td><td colspan="2">~31.8 V</td><td>envelope corners assumed 30 V — recheck (M3.2)</td></tr>
+</table></div>
+
+</main>

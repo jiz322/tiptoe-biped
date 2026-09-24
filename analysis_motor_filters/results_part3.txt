@@ -1,0 +1,52 @@
+
+=== sysid_leg1_20260621_121723.npz — triangle quasi-static (robust) ===
+  trial               joint     |v|med      a      b    n
+  hr_tri_0            L_roll      0.38   1.01  -0.01  217
+  hr_tri_2            L_roll      0.92   0.68   0.06   43
+  hp_tri_0            L_hip       0.53   0.87   0.13  149
+  hp_tri_2            L_hip       2.14   0.92   0.11  116
+
+=== sysid_leg1_20260622_122352.npz — triangle quasi-static (robust) ===
+  trial               joint     |v|med      a      b    n
+  hr_tri_0            L_roll      0.43   0.99   0.01  205
+  hr_tri_2            L_roll      2.22   0.57   0.07   32
+  hp_tri_0            L_hip       0.48   1.30  -0.01   69
+  hp_tri_2            L_hip       2.01   1.12  -0.04   48
+
+=== sysid_leg1_20260622_122841.npz — triangle quasi-static (robust) ===
+  trial               joint     |v|med      a      b    n
+  hr_tri_0            L_roll      0.45   1.03   0.00  177
+  hp_tri_0            L_hip       0.45   1.22  -0.05   51
+  hp_tri_2            L_hip       2.11   1.26   0.00   55
+
+=== BALANCE [G2i] velocity channel scale (reported vs d(pos)/dt) ===
+  L_roll   LS scale=1.025 (IQR 1.017-1.035, n=26)   integral=1.014
+  L_hip    LS scale=1.017 (IQR 1.013-1.019, n=26)   integral=1.011
+  L_knee   LS scale=1.007 (IQR 1.006-1.009, n=26)   integral=1.007
+  R_roll   LS scale=1.020 (IQR 1.015-1.026, n=26)   integral=1.009
+  R_hip    LS scale=1.022 (IQR 1.015-1.026, n=26)   integral=1.013
+  R_knee   LS scale=1.008 (IQR 1.001-1.010, n=26)   integral=1.007
+
+=== BALANCE [G2i] FILTER-TRANSPARENT delivery (|dτ_exp/dt|<10 Nm/s, |τ_exp|>0.6) ===
+  L_roll   median= 0.82  IQR  0.60- 0.99  n=861
+  L_hip    median= 0.71  IQR  0.32- 0.94  n=482
+  L_knee   median= 0.40  IQR  0.11- 0.71  n=463
+  R_roll   median= 0.81  IQR  0.53- 0.96  n=916
+  R_hip    median= 0.85  IQR  0.52- 0.98  n=490
+  R_knee   median= 0.43  IQR  0.11- 0.76  n=366
+
+=== BALANCE [F] velocity channel scale (reported vs d(pos)/dt) ===
+  L_roll   LS scale=1.017 (IQR 1.014-1.026, n=25)   integral=1.008
+  L_hip    LS scale=1.013 (IQR 1.009-1.019, n=25)   integral=1.009
+  L_knee   LS scale=1.009 (IQR 1.007-1.011, n=25)   integral=1.006
+  R_roll   LS scale=1.019 (IQR 1.014-1.024, n=25)   integral=1.010
+  R_hip    LS scale=1.017 (IQR 1.014-1.020, n=25)   integral=1.011
+  R_knee   LS scale=1.003 (IQR 0.991-1.007, n=25)   integral=1.010
+
+=== BALANCE [F] FILTER-TRANSPARENT delivery (|dτ_exp/dt|<10 Nm/s, |τ_exp|>0.6) ===
+  L_roll   median= 0.71  IQR  0.52- 0.90  n=1562
+  L_hip    median= 0.63  IQR  0.28- 0.93  n=794
+  L_knee   median= 0.20  IQR  0.03- 0.47  n=795
+  R_roll   median= 0.77  IQR  0.56- 0.92  n=1473
+  R_hip    median= 0.64  IQR  0.35- 0.91  n=755
+  R_knee   median= 0.18  IQR  0.01- 0.49  n=745

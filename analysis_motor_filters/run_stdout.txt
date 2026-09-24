@@ -1,0 +1,160 @@
+
+=== SYSID sysid_leg1_20260621_121723.npz: 25 trials ===
+
+  velocity channel vs d(pos)/dt  (per excited motor):
+    L_roll  tau=  1.2 ms (IQR 0.0-2.8)  scale=0.998  R2=0.994  n=4   xcorr_lag=0.6 ms
+    L_hip   tau=  4.2 ms (IQR 3.9-4.9)  scale=1.125  R2=0.981  n=3   xcorr_lag=3.9 ms
+    L_knee  tau=  3.9 ms (IQR 3.5-5.6)  scale=1.141  R2=0.990  n=7   xcorr_lag=1.8 ms
+
+  reported torque vs PD-expected (kd on firmware vel):
+    L_roll  tau= 15.4 ms (IQR 1.5-53.2)  scale=0.904 (IQR 0.75-1.03)  delta=1t  R2=0.166  n=6
+    L_hip   tau=  8.4 ms (IQR 1.3-35.3)  scale=0.860 (IQR 0.77-1.04)  delta=1t  R2=0.333  n=6
+    L_knee  tau=  9.8 ms (IQR 9.3-64.9)  scale=0.315 (IQR 0.31-0.67)  delta=1t  R2=0.737  n=3
+
+  reported torque vs PD-expected (kd on RAW dpos vel):
+    L_roll  tau= 15.4 ms  scale=0.915  delta=1t  R2=0.223  n=6
+    L_hip   tau=  4.9 ms  scale=0.864  delta=1t  R2=0.351  n=6
+    L_knee  tau=  7.4 ms  scale=0.313  delta=1t  R2=0.748  n=3
+
+  STEP onset timing (ms to 10%/90% of own peak, first 400 ms):
+    trial                 joint      accel t10/t90   τ_meas t10/t90    τ_exp t10/t90
+    hr_step_+0.2          L_roll        0/60             0/40             0/0       
+    hr_step_-0.2          L_roll        0/161            0/40             0/0       
+    hr_step_+0.4          L_roll        0/40             0/40             0/0       
+    hr_step_-0.4          L_roll        0/201           20/40             0/0       
+    hp_step_+0.3          L_hip         0/20            10/20             0/0       
+    hp_step_-0.3          L_hip         0/20             0/111            0/0       
+    hp_step_+0.6          L_hip         0/20             0/20             0/0       
+    hp_step_-0.6          L_hip         0/20            20/40             0/0       
+    kn_stiff_step_+0.3    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_-0.3    L_knee        0/20            10/30             0/0       
+    kn_stiff_step_+0.6    L_knee        0/20             0/20             0/0       
+    kn_stiff_step_-0.6    L_knee        0/20            20/20             0/0       
+    kn_float_step_+0.3    L_knee        0/20             0/20             0/0       
+    kn_float_step_-0.3    L_knee        0/20             0/30             0/0       
+
+=== SYSID sysid_leg1_20260622_122352.npz: 25 trials ===
+
+  velocity channel vs d(pos)/dt  (per excited motor):
+    L_roll  tau=  0.0 ms (IQR 0.0-1.6)  scale=0.999  R2=0.993  n=3   xcorr_lag=0.7 ms
+    L_hip   tau=  4.6 ms (IQR 4.4-6.0)  scale=1.128  R2=0.983  n=3   xcorr_lag=2.8 ms
+    L_knee  tau=  3.9 ms (IQR 3.9-8.1)  scale=1.130  R2=0.995  n=5   xcorr_lag=1.5 ms
+
+  reported torque vs PD-expected (kd on firmware vel):
+    L_roll  tau= 27.1 ms (IQR 0.0-43.2)  scale=0.825 (IQR 0.78-0.87)  delta=1t  R2=0.879  n=5
+    L_hip   tau= 17.1 ms (IQR 15.5-22.5)  scale=0.957 (IQR 0.75-1.36)  delta=1t  R2=0.773  n=5
+    L_knee  tau=  9.8 ms (IQR 8.9-64.9)  scale=0.313 (IQR 0.31-0.64)  delta=1t  R2=0.745  n=3
+
+  reported torque vs PD-expected (kd on RAW dpos vel):
+    L_roll  tau= 27.1 ms  scale=0.831  delta=1t  R2=0.880  n=5
+    L_hip   tau=  6.7 ms  scale=0.890  delta=1t  R2=0.765  n=5
+    L_knee  tau=  7.4 ms  scale=0.309  delta=1t  R2=0.757  n=3
+
+  STEP onset timing (ms to 10%/90% of own peak, first 400 ms):
+    trial                 joint      accel t10/t90   τ_meas t10/t90    τ_exp t10/t90
+    hr_step_+0.2          L_roll        0/211            0/40             0/0       
+    hr_step_-0.2          L_roll        0/141            0/30             0/0       
+    hr_step_+0.4          L_roll        0/40             0/40             0/0       
+    hr_step_-0.4          L_roll        0/191            0/40             0/0       
+    hp_step_+0.3          L_hip         0/20            20/40             0/0       
+    hp_step_-0.3          L_hip         0/20            20/40             0/0       
+    hp_step_+0.6          L_hip         0/20            20/30             0/0       
+    hp_step_-0.6          L_hip         0/20            20/30             0/0       
+    kn_stiff_step_+0.3    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_-0.3    L_knee        0/20            10/20             0/0       
+    kn_stiff_step_+0.6    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_-0.6    L_knee        0/20            20/20             0/0       
+    kn_float_step_+0.3    L_knee        0/20            10/20             0/0       
+    kn_float_step_-0.3    L_knee        0/20            20/20             0/0       
+
+=== SYSID sysid_leg1_20260622_122841.npz: 25 trials ===
+
+  velocity channel vs d(pos)/dt  (per excited motor):
+    L_roll  tau=  1.2 ms (IQR 0.0-2.5)  scale=0.997  R2=0.992  n=4   xcorr_lag=0.4 ms
+    L_hip   tau=  4.6 ms (IQR 4.4-6.8)  scale=1.128  R2=0.983  n=3   xcorr_lag=2.3 ms
+    L_knee  tau=  4.6 ms (IQR 3.9-6.7)  scale=1.135  R2=0.996  n=5   xcorr_lag=1.8 ms
+
+  reported torque vs PD-expected (kd on firmware vel):
+    L_roll  tau= 24.7 ms (IQR 3.9-39.4)  scale=0.829 (IQR 0.81-0.91)  delta=1t  R2=0.868  n=5
+    L_hip   tau= 16.3 ms (IQR 12.7-18.3)  scale=0.922 (IQR 0.76-1.20)  delta=1t  R2=0.624  n=6
+    L_knee  tau=  9.8 ms (IQR 8.9-64.9)  scale=0.306 (IQR 0.31-0.57)  delta=1t  R2=0.736  n=3
+
+  reported torque vs PD-expected (kd on RAW dpos vel):
+    L_roll  tau= 24.7 ms  scale=0.836  delta=1t  R2=0.868  n=5
+    L_hip   tau=  7.1 ms  scale=0.901  delta=1t  R2=0.619  n=6
+    L_knee  tau=  7.4 ms  scale=0.306  delta=1t  R2=0.747  n=3
+
+  STEP onset timing (ms to 10%/90% of own peak, first 400 ms):
+    trial                 joint      accel t10/t90   τ_meas t10/t90    τ_exp t10/t90
+    hr_step_+0.2          L_roll        0/211            0/50             0/0       
+    hr_step_-0.2          L_roll        0/201            0/30             0/0       
+    hr_step_+0.4          L_roll        0/201            0/40             0/0       
+    hr_step_-0.4          L_roll        0/201           20/40             0/0       
+    hp_step_+0.3          L_hip         0/20             0/40             0/0       
+    hp_step_-0.3          L_hip         0/20            20/40             0/0       
+    hp_step_+0.6          L_hip         0/20            20/40             0/0       
+    hp_step_-0.6          L_hip         0/131           20/141            0/0       
+    kn_stiff_step_+0.3    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_-0.3    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_+0.6    L_knee        0/20            20/20             0/0       
+    kn_stiff_step_-0.6    L_knee        0/20            20/20             0/0       
+    kn_float_step_+0.3    L_knee        0/20             0/30             0/0       
+    kn_float_step_-0.3    L_knee        0/20            20/60             0/0       
+
+=== BALANCE LOGS [G2i4760 (08-13)] — 26 files ===
+  total ticks analyzed: 4585
+
+  joint    naive scale  filt scale  τ_filter   τ_vel n_logs
+  L_roll         0.780       0.971     43.2m    0.0m     26
+  L_hip          0.712       0.921     29.8m    3.5m     26
+  L_knee         0.389       0.608     24.7m    3.5m     26
+  R_roll         0.785       0.980     39.4m    0.0m     26
+  R_hip          0.735       0.919     29.8m    3.2m     26
+  R_knee         0.376       0.650     47.4m    3.9m     26
+
+  delivery ratio vs |motor speed| (median per bin, filter-corrected):
+             0.0-0.5   0.5-1.0   1.0-2.0   2.0-4.0   4.0-8.0  8.0-16.0
+  L_roll        0.99      0.99      0.98      1.03        --        --
+  L_hip         0.99      0.94      0.94      0.88      0.58        --
+  L_knee        0.81      0.65      0.55      0.51      0.50      0.27
+  R_roll        0.98      1.00      1.00      1.04      0.79        --
+  R_hip         0.98      0.96      0.90      0.79      0.63        --
+  R_knee        0.86      0.87      0.80      0.72      0.46      0.20
+
+  motoring vs braking delivery (median):
+  L_roll   motoring=0.89 (n=761)   braking=1.03 (n=1232)
+  L_hip    motoring=0.86 (n=2012)   braking=1.06 (n=720)
+  L_knee   motoring=0.53 (n=1719)   braking=0.52 (n=736)
+  R_roll   motoring=0.93 (n=663)   braking=1.04 (n=1013)
+  R_hip    motoring=0.83 (n=2236)   braking=1.01 (n=918)
+  R_knee   motoring=0.63 (n=2070)   braking=0.68 (n=541)
+
+=== BALANCE LOGS [F3490 (08-11..13)] — 25 files ===
+  total ticks analyzed: 8195
+
+  joint    naive scale  filt scale  τ_filter   τ_vel n_logs
+  L_roll         0.692       0.933     39.4m    0.0m     25
+  L_hip          0.610       0.842     29.8m    3.5m     25
+  L_knee         0.253       0.525     52.0m    3.5m     25
+  R_roll         0.793       0.969     39.4m    0.0m     25
+  R_hip          0.740       0.905     27.1m    3.5m     25
+  R_knee         0.335       0.668     62.6m    4.2m     25
+
+  delivery ratio vs |motor speed| (median per bin, filter-corrected):
+             0.0-0.5   0.5-1.0   1.0-2.0   2.0-4.0   4.0-8.0  8.0-16.0
+  L_roll        0.94      0.96      0.95      0.79      0.56        --
+  L_hip         0.92      0.90      0.80      0.67      0.53        --
+  L_knee        0.43      0.36      0.27      0.28      0.26      0.22
+  R_roll        0.99      0.98      0.96      0.96      0.64        --
+  R_hip         0.94      0.90      0.80      0.67      0.58        --
+  R_knee        0.78      0.51      0.34      0.31      0.29      0.20
+
+  motoring vs braking delivery (median):
+  L_roll   motoring=0.79 (n=1087)   braking=1.02 (n=1161)
+  L_hip    motoring=0.73 (n=3309)   braking=0.97 (n=727)
+  L_knee   motoring=0.31 (n=2570)   braking=0.19 (n=799)
+  R_roll   motoring=0.90 (n=1109)   braking=1.03 (n=1104)
+  R_hip    motoring=0.74 (n=3524)   braking=0.95 (n=1042)
+  R_knee   motoring=0.34 (n=2798)   braking=0.31 (n=681)
+
+Saved -> <repo>\analysis_motor_filters\results.txt / results.json / *.png

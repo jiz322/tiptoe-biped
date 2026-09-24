@@ -1,0 +1,125 @@
+Function Code,Name,Parameter Type,Attribute,Max Value,Min Value,Current Value
+0X0000,Name,String,Read/Write,,,ÿÿÿÿÿÿÿÿÿÿÿÿ
+0X0001,BarCode,String,Read/Write,,,ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ
+0X1000,BootCodeVersion,String,Read Only,,,V
+0X1001,BootBuildDate,String,Read Only,,,Oct 11 2022
+0X1002,BootBuildTime,String,Read Only,,,17:49:55
+0X1003,AppCodeVersion,String,Read Only,,,1.0.5.0.1
+0X1004,AppGitVersion,String,Read Only,,,V
+0X1005,AppBuildDate,String,Read Only,,,Oct 23 2025
+0X1006,AppBuildTime,String,Read Only,,,16:07:05
+0X1007,AppCodeName,String,Read Only,,,EL_motor
+0X2000,echoPara1,uint16,Config,114,5,5
+0X2001,echoPara2,uint16,Config,114,5,5
+0X2002,echoPara3,uint16,Config,114,5,5
+0X2003,echoPara4,uint16,Config,114,5,5
+0X2004,echoFreHz,uint32,Read/Write,10...,1,500
+0X2005,MechOffset,float,Set,7,-7,4.765695
+0X2006,status4,float,Read/Write,50,-50,0.000000
+0X2007,limit_torque,float,Read/Write,6,0,6.000000
+0X2008,I_FW_MAX,float,Read/Write,33,0,0.000000
+0X2009,motor_baud,uint8,Read/Write,4,1,1
+0X200a,CAN_ID,uint8,Read/Write,127,0,106
+0X200b,CAN_MASTER,uint8,Read/Write,300,0,253
+0X200c,CAN_TIMEOUT,uint32,Read/Write,0...,-2000,0
+0X200d,status2,int16,Read/Write,1800,0,0
+0X200e,status3,uint32,Read/Write,0...,1000,0
+0X200f,status1,float,Read/Write,64,1,0.000000
+0X2010,status6,uint8,Read/Write,1,0,0
+0X2011,cur_filt_gain,float,Read/Write,1,0,0.100000
+0X2012,cur_kp,float,Read/Write,200,0,0.125000
+0X2013,cur_ki,float,Read/Write,200,0,0.015800
+0X2014,spd_kp,float,Read/Write,200,0,6.000000
+0X2015,spd_ki,float,Read/Write,200,0,0.020000
+0X2016,loc_kp,float,Read/Write,200,0,30.000000
+0X2017,spd_filt_gain,float,Read/Write,1,0,0.500000
+0X2018,limit_spd,float,Read/Write,200,0,50.000000
+0X2019,limit_cur,float,Read/Write,27,0,11.000000
+0X201a,loc_ref_filt_gai,float,Read/Write,100,0,0.040000
+0X201b,add_elec_offset,float,Read/Write,10,-10,0.000000
+0X201c,position_offset,float,Read/Write,27,0,0.000000
+0X201d,chasu_angle_offs,float,Read/Write,27,0,5.652719
+0X201e,spd_step_value,float,Read/Write,150,0,0.010000
+0X201f,vel_max,float,Read/Write,20,0,10.000000
+0X2020,acc_set,float,Read/Write,1000,0,10.000000
+0X2021,zero_sta,uint8,Read/Write,100,0,0
+0X2022,protocol_1,uint8,Read/Write,20,0,0
+0X2023,add_offset,float,Read/Write,7,-7,0.000000
+0X3000,timeUse0,uint16,Read Only,,,27
+0X3001,timeUse1,uint16,Read Only,,,0
+0X3002,timeUse2,uint16,Read Only,,,23
+0X3003,timeUse3,uint16,Read Only,,,0
+0X3004,encoderRaw,int16,Read Only,,,12421
+0X3005,mcuTemp,int16,Read Only,,,354
+0X3006,motorTemp,int16,Read Only,,,300
+0X3007,vBus(mv),uint16,Read Only,,,31860
+0X3008,adc1Offset,int32,Read Only,,,1950
+0X3009,adc2Offset,int32,Read Only,,,1993
+0X300a,adc1Raw,uint16,Read Only,,,1949
+0X300b,adc2Raw,uint16,Read Only,,,1991
+0X300c,VBUS,float,Read Only,,,31.860992
+0X300d,cmdId,float,Read Only,,,0.000000
+0X300e,cmdIq,float,Read Only,,,0.000000
+0X300f,cmdlocref,float,Read Only,,,0.000043
+0X3010,cmdspdref,float,Read Only,,,0.000000
+0X3011,cmdTorque,float,Read Only,,,0.000000
+0X3012,cmdPos,float,Read Only,,,0.000043
+0X3013,cmdVel,float,Read Only,,,0.000000
+0X3014,rotation,int32,Read Only,,,0
+0X3015,modPos,float,Read Only,,,4.766078
+0X3016,mechPos,float,Read Only,,,0.000043
+0X3017,mechVel,float,Read Only,,,0.000000
+0X3018,elecPos,float,Read Only,,,0.419386
+0X3019,ia,float,Read Only,,,0.000000
+0X301a,ib,float,Read Only,,,0.000000
+0X301b,ic,float,Read Only,,,0.000000
+0X301c,timeout,int32,Read Only,,,0
+0X301d,phaseOrder,uint8,Read Only,,,1
+0X301e,iqf,float,Read Only,,,0.000000
+0X301f,boardTemp,int16,Read Only,,,354
+0X3020,iq,float,Read Only,,,0.000000
+0X3021,id,float,Read Only,,,0.000000
+0X3022,faultSta,uint32,Read Only,,,0
+0X3023,warnSta,uint32,Read Only,,,0
+0X3024,drv_fault,uint16,Read Only,,,0
+0X3025,drv_temp,uint16,Read Only,,,0
+0X3026,Uq,float,Read Only,,,0.000000
+0X3027,Ud,float,Read Only,,,0.000000
+0X3028,dtc_u,float,Read Only,,,0.000000
+0X3029,dtc_v,float,Read Only,,,0.000000
+0X302a,dtc_w,float,Read Only,,,0.000000
+0X302b,v_bus,float,Read Only,,,31.860992
+0X302c,torque_fdb,float,Read Only,,,0.000000
+0X302d,rated_i,float,Read Only,,,1.700000
+0X302e,limit_i,float,Read Only,,,11.000000
+0X302f,spd_ref,float,Read Only,,,0.000000
+0X3030,spd_reff,float,Read Only,,,0.000000
+0X3031,zero_fault,uint8,Read Only,,,0
+0X3032,position,float,Read Only,,,4.766078
+0X3033,chasu_angle,float,Read Only,,,5.643132
+0X3034,as_angle,float,Read Only,,,4.763394
+0X3035,cs_angle,float,Read Only,,,4.123341
+0X3036,chasu_angle_out,float,Read Only,,,-0.086286
+0X3037,motormechpositio,float,Read Only,,,0.000383
+0X3038,fault1,uint32,Read Only,,,3096005953
+0X3039,fault2,uint32,Read Only,,,2482497154
+0X303a,fault3,uint32,Read Only,,,4196724580
+0X303b,fault4,uint32,Read Only,,,3421503347
+0X303c,fault5,uint32,Read Only,,,3210431471
+0X303d,fault6,uint32,Read Only,,,1069526650
+0X303e,fault7,uint32,Read Only,,,3667582973
+0X303f,fault8,uint32,Read Only,,,4273809406
+0X3040,ElecOffset,float,Read Only,,,-4.309100
+0X3041,mcOverTemp,int16,Read Only,,,1350
+0X3042,Kt_Nm/Amp,float,Read Only,,,0.680000
+0X3043,Tqcali_Type,uint8,Read Only,,,1
+0X3044,low_position,float,Read Only,,,0.000000
+0X3045,theta_mech_1,float,Read Only,,,0.000043
+0X3046,instep,float,Read Only,,,0.000000
+0X3047,position,float,Read Only,,,4.766078
+0X3048,chasu_angle_init,float,Read Only,,,-0.009587
+0X3049,chasu_angle_out,float,Read Only,,,-0.086286
+0X304a,motormechinit,float,Read Only,,,0.000383
+0X304b,mech_angle_init2,float,Read Only,,,0.000043
+0X304c,mech_angle_rotat,int16,Read Only,,,0
+0X304d,¨d,uint8,Read Only,,,168

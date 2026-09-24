@@ -1,0 +1,891 @@
+<title>Replant Bench Report</title>
+<style>
+  :root {
+    --bg: #F6F7F6;
+    --surface: #FFFFFF;
+    --surface2: #EEF1EF;
+    --ink: #1C2421;
+    --ink2: #55605B;
+    --line: #D8DDDA;
+    --accent: #0E6E62;
+    --accent-ink: #0A554C;
+    --warn-bg: #FBF3E4;
+    --warn-edge: #B45309;
+    --warn-ink: #7C3D07;
+    --gate-bg: #FAECEC;
+    --gate-edge: #A33434;
+    --gate-ink: #7E2626;
+    --ok: #2E7D5B;
+    --ok-bg: #E7F2EC;
+    --dead-bg: #ECECEC;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+    --sans: -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151A18;
+      --surface: #1C2320;
+      --surface2: #232B28;
+      --ink: #E4EAE7;
+      --ink2: #93A09A;
+      --line: #313B37;
+      --accent: #4FD8C4;
+      --accent-ink: #7BE4D4;
+      --warn-bg: #2A2318;
+      --warn-edge: #D08A3E;
+      --warn-ink: #E8B87E;
+      --gate-bg: #2A1B1B;
+      --gate-edge: #C96A6A;
+      --gate-ink: #E2A5A5;
+      --ok: #5BBE93;
+      --ok-bg: #1B2A23;
+      --dead-bg: #262B29;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151A18;
+    --surface: #1C2320;
+    --surface2: #232B28;
+    --ink: #E4EAE7;
+    --ink2: #93A09A;
+    --line: #313B37;
+    --accent: #4FD8C4;
+    --accent-ink: #7BE4D4;
+    --warn-bg: #2A2318;
+    --warn-edge: #D08A3E;
+    --warn-ink: #E8B87E;
+    --gate-bg: #2A1B1B;
+    --gate-edge: #C96A6A;
+    --gate-ink: #E2A5A5;
+    --ok: #5BBE93;
+    --ok-bg: #1B2A23;
+    --dead-bg: #262B29;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    margin: 0;
+    padding: 2.5rem 1.25rem 6rem;
+    font-size: 16px;
+  }
+  main { max-width: 76ch; margin: 0 auto; }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.2; }
+  h1 {
+    font-family: var(--mono);
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.25rem;
+  }
+  .subtitle { color: var(--ink2); margin: 0 0 0.5rem; }
+  .meta {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    margin: 3rem 0 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  h2 .phase-no { color: var(--accent); }
+  h3 { font-size: 1rem; margin: 1.5rem 0 0.4rem; }
+  p { margin: 0.5rem 0; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--surface2);
+    border-radius: 3px;
+    padding: 0.08em 0.35em;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.14em 0.6em;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .chip.closed { background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok); }
+  .chip.dead { background: var(--dead-bg); color: var(--ink2); border: 1px solid var(--ink2); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .chip.lead { background: var(--gate-bg); color: var(--gate-ink); border: 1px solid var(--gate-edge); }
+  .chip.pending { background: var(--surface); color: var(--ink2); border: 1px dashed var(--ink2); }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink2);
+    font-weight: 600;
+    padding: 0.4rem 0.75rem 0.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  td {
+    padding: 0.45rem 0.75rem 0.45rem 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td code, th code { background: transparent; padding: 0; }
+  td.num { white-space: nowrap; }
+  ul, ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  li { margin: 0.3rem 0; }
+  .callout {
+    border-left: 3px solid var(--warn-edge);
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .callout strong { color: inherit; }
+  .verdict {
+    border: 1.5px solid var(--gate-edge);
+    background: var(--gate-bg);
+    color: var(--gate-ink);
+    padding: 0.85rem 1.1rem;
+    border-radius: 6px;
+    margin: 1.25rem 0;
+    font-size: 0.92rem;
+  }
+  .verdict .v-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .good {
+    border: 1.5px solid var(--ok);
+    background: var(--ok-bg);
+    color: var(--ink);
+    padding: 0.85rem 1.1rem;
+    border-radius: 6px;
+    margin: 1.25rem 0;
+    font-size: 0.92rem;
+  }
+  .good .v-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--ok);
+  }
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+  .block h3 { margin-top: 0.25rem; }
+  .lbl {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink2);
+    font-weight: 600;
+  }
+  a { color: var(--accent-ink); }
+</style>
+
+<main>
+<h1>Replant Bench Report</h1>
+<p class="subtitle">Execution report against the Replant Runbook — what was measured, what died, what leads.</p>
+<div class="meta">
+  <span>DATE&nbsp;2026-08-17 → 08-18 (4 sessions + review)</span>
+  <span>TAG&nbsp;pre-replant-20260817</span>
+  <span>BUS&nbsp;CAN2SPI, zero pacing</span>
+  <span>ROBOT&nbsp;big_thigh biped, tether-hung (no stand — see review)</span>
+</div>
+
+<p>Four bench sessions executed runbook Phases 0–6. The headline: the plant's
+latency panel is <em>an order of magnitude faster</em> than every number the sim
+was calibrated against, and <strong>every mechanistic plant-side fall suspect
+died under measurement</strong> — the <code>spd_filt_gain</code> kd-lag
+hypothesis, the EL05 reference filter, and the RS01 current-clamp torque ceiling.
+What survives: the partial static bias and the un-caught launch transient.</p>
+
+<p>A pre-Phase-7 review pass (08-18, no reruns) then audited all of it. Read the
+<a href="#review">Phases 0–6 review</a> before writing anything into the cfg: three
+claims above are corrected there, <code>armature</code> turns out to be the gating
+unmeasured field, and the viscous-friction DR band is <strong>7× too narrow to
+contain the measured joint</strong> — itself a live candidate for the plant gap
+this campaign is hunting.</p>
+
+<h2>Scoreboard <span class="chip closed">phases 0–6 closed</span> <span class="chip pending">reviewed 08-18 — 7 corrections, 2 DR bands wrong</span></h2>
+<p class="muted">Phases 0–6 were re-audited on 08-18 against the raw captures without
+re-running any hardware. Chips below record what each session <em>concluded</em>; the
+<a href="#review">review section</a> records what survived that audit, and it revises
+seven published claims. Read the two together — three &ldquo;closed&rdquo; chips are ahead
+of their evidence, and the largest finding of the audit (viscous DR bands sitting below
+the measured plant) is new, not a restatement.</p>
+<div class="table-wrap"><table>
+<tr><th>Phase</th><th>Item</th><th>Outcome</th></tr>
+<tr><td>0</td><td>Preflight</td><td>CLOSED — freeze tag, decode verified on hardware, six-motor firmware dump</td></tr>
+<tr><td>1</td><td>Loop timing</td><td>CLOSED — action 2.4–2.8 ms, IMU skew 2.0 ms, soak 100.00%</td></tr>
+<tr><td>2</td><td>Velocity / reference filters</td><td>CLOSED — kd filter ~0.7 ms (hypothesis dead); EL05 ref filter not live</td></tr>
+<tr><td>3</td><td>Torque ceiling &amp; speed envelope</td><td>M3.1 CLOSED (ballistic probe, no load rig): full delivery to 17 Nm, clamp hypothesis dead. M3.2 envelope deferred — launch speeds sit deep inside it</td></tr>
+<tr><td>4</td><td>Step-response re-sysid</td><td>CLOSED (session 2, kp-sweep) — <strong>act_lag phantom on all three joints</strong>; ring is the kp-servo mode; no firmware loop lag on RS01, ≤13 ms confounded lag on hip_roll (stand compliance)</td></tr>
+<tr><td>5</td><td>Friction, inertia (bench)</td><td>CLOSED (session 3) — commanded-τ breakaway + M3.1-envelope ballistic fits; <strong>inertia "conflict" resolved as method bias</strong>; friction centrals measured; knee belt-off split pending</td></tr>
+<tr><td>6</td><td>Mass/balance</td><td>CLOSED (session 4, 08-18) — weigh-in +5.9% → recenter <code>dr_mass_mult</code>; init_h already fixed (0.4401, z=−0.01σ); straightedge declined (zero unverifiable) → substituted crawl-pose IMU decomposition: <strong>the −0.089 pg trim over-corrects by ~0.057</strong>; supine cross-check pending</td></tr>
+<tr><td>7–9</td><td>Env edits → replica gate → retrain</td><td>BLOCKED on 4–6; the P7 edit list <em>shrank</em> today</td></tr>
+</table></div>
+
+<h2><span class="phase-no">Phase 0</span> — Preflight <span class="chip closed">closed</span></h2>
+<ul>
+  <li><strong>Freeze:</strong> ~100 uncommitted files snapshotted; tag <code>pre-replant-20260817</code> (commit <code>500032b</code>); all fitted numbers attributable.</li>
+  <li><strong>Velocity decode (the June ×1.136 bug):</strong> verified fixed on hardware, both motor families. Integral-method consistency: k = 0.9995 (RS01) / 1.0014 (EL05) — <strong>PASS</strong> at &lt;0.2%. The naive slope regression read 2.03% and would have false-alarmed; timestamp jitter dilutes regression slopes (measurement-trap lesson re-confirmed).</li>
+  <li><strong>Reply pacing item was stale:</strong> superseded 08-16 by Phase D — each motor replies on its own ID, <code>CAN2SPI_PACING_S = 0.0</code>, and the bring-up guard verified 6/6 distinct live. Runbook text corrected.</li>
+  <li><strong>Firmware dump, all six motors, on the new bus</strong> (<code>fw_livedump_all6_20260817.txt</code>): zero per-unit spread. <code>spd_filt_gain</code> 0.100 ×4 RS01 / 0.500 ×2 EL05; <code>limit_cur</code> 23 A ×4 / 11 A ×2; zero faults. <strong>VBUS 30.2–30.65 V idle</strong> — the appendix's "~31.8 V, recheck" resolves to: the 30 V envelope assumption was right.</li>
+</ul>
+<div class="block">
+<h3>New protocol facts (bank these)</h3>
+<ul>
+  <li>MIT-mode firmware ignores private-protocol extended frames <em>even on CAN2SPI</em> — the June finding was firmware behavior, not the USB adapter. Reads/writes require the protocol round-trip with a power cycle each way.</li>
+  <li><code>spd_filt_gain</code> is live-readable at runtime index <code>0x7021</code> (verified against the vendor CSVs). <code>loc_ref_filt_gain</code> has <strong>no CAN-reachable mirror at all</strong> (full scan 0x7000–0x7037) — vendor-tool-only.</li>
+  <li>Vendor tool CSV export is broken → new verification path: read/set values in the GUI, verify over CAN with <code>robstride_param_read.py</code> (now speaks SocketCAN, has a guarded RAM-write mode).</li>
+</ul>
+</div>
+
+<h2><span class="phase-no">Phase 1</span> — Loop timing on CAN2SPI <span class="chip closed">closed</span></h2>
+<p>Every CAN2USB-era number in cfg §12b is dead. The new plant is fast:</p>
+<div class="table-wrap"><table>
+<tr><th>Measurement</th><th>Old assumption</th><th>Measured</th><th>Feeds</th></tr>
+<tr><td>M1.1 action → motion onset, hip_pitch</td><td class="num" rowspan="3">15 ms</td><td class="num">2.36 ms mean, 2.82 p95 (σ 0.36)</td><td rowspan="3"><code>dr_action_delay</code> → <strong>unchanged at 1 / 2</strong> (⌈2.4 ms/10 ms⌉ = 1)</td></tr>
+<tr><td>&nbsp;&nbsp;… knee (belt adds ~0.4 ms)</td><td class="num">2.80 ms mean, 3.49 p95 (50/50 reps)</td></tr>
+<tr><td>&nbsp;&nbsp;… hip_roll</td><td class="num">2.62 ms mean, 4.36 p95</td></tr>
+<tr><td>M1.2 encoder staleness vs IMU</td><td class="num">IMU leads by 10 ms</td><td class="num">IMU leads by 1.96 ms (corr 0.96)</td><td><code>dr_joint_delay</code> 2 → <strong>1</strong> (skew is 0.2 tick, not 1); <code>dr_imu_delay</code> stays 1</td></tr>
+<tr><td>M1.3 tick health, 600 s full traffic</td><td class="num">—</td><td class="num">59,992 ticks, 100.00% replies, jitter p99 0.022 ms, busy p50 2.37 ms</td><td>accept ✓</td></tr>
+</table></div>
+<p>Acceptance gates passed with wide margin (p95−p05 onset spread ≈ 1 ms vs the
+10 ms control step). The hand-held roll rerun was discarded — hand resistance
+produced a 15 ms / 2 ms direction asymmetry, a useful reminder that the fits
+assume a free limb.</p>
+<div class="callout"><strong>One flag from the soak:</strong> a single tick stalled
+94 ms in the <code>nn</code> (policy inference) phase — 0.0017% of ticks, far
+under the 0.1% gate, and too rare to explain deterministic 0.16 s falls. Still:
+a ~9-period stall mid-launch would hurt. Recommend torch allocator / GC
+hardening before flight (Phase 10 list).</div>
+
+<h2><span class="phase-no">Phase 2</span> — Filters <span class="chip closed">closed</span> <span class="chip dead">spd_filt hypothesis</span></h2>
+
+<div class="good">
+<span class="v-label">M2.1 verdict — three independent measurements agree</span>
+The RS01 <code>spd_filt_gain=0.1</code> EMA runs at the <strong>current-loop rate
+(~13 kHz)</strong>: a 0.70 ms, |H|≈1.00 filter, flat to 25 Hz, corner ≈230 Hz —
+transparent where the balance loop lives. (1) M1.2 cross-correlation: telemetry
+velocity trails the position-derivative by 0.70 ms. <em>(Review: raw arrays not
+retained; the M1.2 claim itself reads 1.96 ms. Unauditable — do not count.)</em>
+(2) Chirp lock-in: 0.70 ms constant group delay at every frequency, both kd
+passes. <em>(Review: independently reproduced at 0.704 ms ± 0.041 over 13 dwells.
+This one measurement carries the verdict, and it is enough.)</em> (3) kd brake
+test: undershoot 3.4% at kd=2, none at kd=0.5, against a ≥13.6% counterfactual.
+<em>(Review: 3.4% sits under 2 velocity LSBs and ~6× below the run's own 22%
+noise floor; the two kd conditions are statistically indistinguishable and the
+counterfactual collapses to ~0 at the engaged inertia. Withdrawn.)</em>
+</div>
+<ul>
+  <li><strong>M2.2 (firmware A/B): moot.</strong> Nothing to raise; sim and firmware are already "matched" — the filter is negligible on both sides. No vendor-tool writes.</li>
+  <li><strong>M2.3 (EL05 <code>loc_ref_filt_gain=0.04</code>): not live in MIT mode.</strong> Position-step responses show no 20–50 ms filter. <em>(Review 08-18: the published &ldquo;1.7% rms, filter fitted to exactly 0 ms&rdquo; does not reproduce — refit gives 21.6% rms with the prefilter pole pinned at its bound. The conclusion survives on a weaker basis: 27 ms of fitted rise buys only 0.4% of residual.)</em> The hip_roll "most ring, lowest ω" act_lag fit is therefore an old-bus artifact — Phase 4's refit should confirm.</li>
+  <li><strong>Bonus physics <span class="chip dead">retracted 08-18</span></strong> — as published: hip_pitch inertia 8.48e-3 kg·m², &ldquo;independently validating&rdquo; the cfg's 8.4e-3 combined armature, pendulum stiffness 4.73 Nm/rad (3.8 Hz). <strong>Do not use.</strong> The real chirp pins stiffness at exactly 0.000 at 28–32% residual, and the quoted pair matches the fitter self-test's <em>synthetic truth</em> to 0.3%. Engaged hip inertia is 31e-3 (P5). See the <a href="#review">review</a>.</li>
+</ul>
+<div class="block">
+<h3>Methodology notes for the remaining phases</h3>
+<ul>
+  <li><strong>Hand-held-base data breaks rigid-plant fits</strong> (FRF chirp 28% rms, step control-fit 32%). If a test needs the torso held, design it so the discriminator lives in the first ~10 ms (brake test), or fixture the robot.</li>
+  <li><strong>Time-domain bounding beat FRF fitting</strong> on this rig: stiction (C ≈ 0.1–0.3 Nm, amplitude-dependent) and a rest equilibrium only known to ±40 mrad poison small-signal frequency-domain work.</li>
+  <li><strong>Synthetic self-tests first:</strong> the kd fit pipeline was validated on simulated data with known truth before touching real data — kept a sign-convention bug from becoming a wrong conclusion.</li>
+</ul>
+</div>
+
+<h2>Hypothesis board after today</h2>
+<div class="table-wrap"><table>
+<tr><th>Fall-cause candidate</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>kd-path velocity filter (<code>spd_filt</code>)</td><td><span class="chip dead">dead 08-17</span></td><td>0.7 ms, three independent measurements (this report)</td></tr>
+<tr><td>Launch / IMU / DR coverage</td><td><span class="chip dead">dead 08-13</span></td><td>hw-matched sim survives 6 s</td></tr>
+<tr><td>Torque delivery softness (0.59–0.66)</td><td><span class="chip dead">dead 08-14</span></td><td>telemetry artifact</td></tr>
+<tr><td>Static balance-point bias (+0.075)</td><td><span class="chip pending">demoted 08-18</span></td><td>P6 crawl-pose decomposition: ~0.057 of it is IMU-trim over-correction (hand-held-derived −0.089 vs crawl-derived −0.032 mounting); physical CoM residual ≈ +0.018, inside DR. Was already insufficient alone (≤5% die &lt;0.5 s). Supine cross-check pending</td></tr>
+<tr><td><strong>RS01 current clamp: 12.9 Nm real vs 17 modeled</strong></td><td><span class="chip dead">dead 08-17</span></td><td>Ballistic torque probe (bursts vs known inertia): delivered tracks commanded 1:1 from 4→17 Nm, α/τ constant with <em>no break at 12.9</em> — full delivery in the launch-relevant transient regime. Effective Kt ≈ 0.74 Nm/A, not the 0.562 used in the 23 A × Kt arithmetic. <code>saturation_effort</code> 17/23.2 validated. (Sustained-stall thermal derating not probed; no falls-relevant mechanism.)</td></tr>
+<tr><td><strong>Rotor off-diagonal belt coupling + 4× armature</strong></td><td><span class="chip lead">LEAD (P7, 08-18)</span></td><td>Missing hip torque the size of the hip's own commands, peaking at the 0.161 s fall-initiation window (fall-log replay); requires two-joint acceleration — invisible to every single-joint bench. With it in the plant, hw_matched flips from surviving 6 s to 512/512 pitch-first falls, 83% one-signed in the hardware direction (Phase 8 first pass). Timing spread still wider than hardware's 0.25 s cluster.</td></tr>
+<tr><td>Un-caught launch transient</td><td><span class="chip pending">open, demoted</span></td><td>still a candidate for the residual timing mismatch; no longer needed to explain the fall itself</td></tr>
+</table></div>
+
+<h2>Phase 7 edit list — updated sources</h2>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>Now in cfg</th><th>New source</th></tr>
+<tr><td><code>dr_action_delay_min/max</code></td><td>1 / 2</td><td><strong>KEEP 1 / 2.</strong> Corrected: an earlier draft here read &ldquo;0 / 1&rdquo;, which is wrong twice over. The runbook's own mapping rule is min = measured floor rounded up, max = floor + 1 step, and ⌈2.36/10⌉ = 1 → <strong>1 / 2</strong>. Separately, <code>min=0</code> would revert a deliberate change (<code>rl_env_cfg_p6.py:946</code>, &ldquo;was 0 — never instant&rdquo;): a 10 ms control period plus 2.4–2.8 ms transport is never a zero-delay path, and letting the sim sample 0 lets the policy learn a reflex hardware cannot honor. M1.1 <em>shrinks</em> the old 15 ms assumption to ~2.4 ms, but both round into the same 1-step bucket, so the tap does not move.</td></tr>
+<tr><td><code>dr_imu_delay_*</code></td><td>1 / 1</td><td><strong>KEEP 1 / 1.</strong> Locked at 1 on purpose (<code>:951-953</code> — a zero-latency balance loop was the 2 Hz wobble). M1.2 does not challenge it.</td></tr>
+<tr><td><code>dr_joint_delay_*</code></td><td>2 / 2</td><td><strong>2 → 1 / 1. This is the one delay tap M1.2 actually moves.</strong> The cfg holds joint at 2 explicitly &ldquo;so encoder feedback stays ~10 ms behind the IMU, matching the measured skew&rdquo; (<code>:956-958</code>) — but that rationale predates M1.2. The measured skew is <strong>1.96 ms, not 10 ms</strong>: 0.2 of a tick, which rounds to <em>no</em> relative offset. Carrying joint one full tick behind the IMU overstates the real skew by ~5×. Set both paths to 1. <span class="muted">Caveat: M1.2 pinned the <em>relative</em> skew only; absolute per-path staleness was never measured (see the gaps table), so 1 comes from the runbook's round-up floor rather than from a direct measurement.</span></td></tr>
+<tr><td><em>new</em> kd velocity EMA</td><td>planned</td><td><strong>DROP</strong> — 0.7 ms is inside delay-DR granularity (M2.1)</td></tr>
+<tr><td><em>new</em> hip_roll ref filter</td><td>planned</td><td><strong>DROP</strong> — not live (M2.3)</td></tr>
+<tr><td><code>act_lag_*</code></td><td>ω 21/37.9/27.6</td><td><strong>act_lag_enable=False — CONFIRMED</strong> (P4 kp-sweep, session 2: ring moves with kp, prefilter transparent, M1.1 onset 2.4–2.8 ms); drop <code>dr_act_lag_*</code> with it</td></tr>
+<tr><td><code>saturation_effort</code> hp / knee</td><td>17 / 23.2</td><td><strong>KEEP</strong> — validated by ballistic probe (M3.1, transient regime)</td></tr>
+<tr><td><code>velocity_limit</code></td><td>28 / 27.5 / 20</td><td>M3.2 (VBUS 30.5 V measured; fw <code>limit_spd</code> 44/50)</td></tr>
+<tr><td><code>friction</code> (Coulomb)</td><td>0.12 / 0.06 / 0.12</td><td><strong>P5 measured, joint-space</strong> — 0.146 / <strong>0.177</strong> / 0.187 (hp/knee/roll). Knee is 0.130 motor ×1.364 and lands <strong>outside</strong> its 0.03–0.12 DR box; widen it. Knee awaits the belt-off split before writing.</td></tr>
+<tr><td><code>dynamic_friction</code></td><td>0.10 / 0.05 / 0.10</td><td><strong>P5 measured, joint-space</strong> — 0.144 / ≈0.22 / ≈0.20. C<sub>kinetic</sub> ≈ C<sub>static</sub> on hip (cross-validated); knee value is polluted by hip reaction through the belt, so it is provisional.</td></tr>
+<tr><td><code>viscous_friction</code></td><td>0.003 all</td><td><strong>P5 measured, joint-space</strong> — 0.043 / 0.029 / ≈0. Both hip_pitch and knee sit <strong>outside</strong> the 0.0015–0.006 DR box (7× and 4.8×); the band must widen, not just recenter. Decide a nonzero floor for roll or the ×0.5–2 DR keeps it at zero.</td></tr>
+<tr><td><code>armature</code></td><td>8.4e-3 / 7.81e-3 / 7.0e-4</td><td><strong>NOT YET COMPUTED — the gating field.</strong> Needs I<sub>engaged</sub> − I<sub>URDF-link</sub> per axis; measured I<sub>engaged</sub> is 31–40e-3 hip / 20.7e-3 knee motor (= <strong>38.5e-3 joint</strong>) / roll unresolvable on this rig. Do not write I<sub>engaged</sub> into this field. Watch the hip double-count: the cfg's 8.4e-3 already carries the knee rotor reflected through the belt (c²·7.81e-3), and the belt-on measurement contains it too. The 8.4e-3 pendulum agreement was rotor-side small-signal, not a validation.</td></tr>
+<tr><td><code>dr_mass_mult_min/max</code></td><td>0.88 / 1.12</td><td><strong>0.94 / 1.18</strong> (P6 weigh-in: hw 5.5 kg = URDF ×1.059)</td></tr>
+<tr><td><code>dr_proj_grav_bias_max</code></td><td>0.03</td><td><strong>KEEP 0.03</strong> if <code>IMU_PG_OFFSET</code> is recalibrated to ≈−0.032 (P6: physical residual ≈+0.018); if the −0.089 trim stays, must train ≥0.1 as G2i did</td></tr>
+</table></div>
+
+<h2><span class="phase-no">Phase 4</span> — Step-response re-sysid <span class="chip closed">closed (session 2)</span> <span class="chip dead">act_lag</span></h2>
+<p>Existing M2.3 step data answered most of M4.1 without new motion; a
+kp-triplet battery per joint (user-run, same pose, single sitting) supplied the
+discriminator. Fits by <code>data/step_lag_fit.py</code> and
+<code>data/kp_sweep_fit.py</code>, both synthetic-validated (the kp-sweep
+self-test recovers a planted 30 ms loop delay exactly and separates models at
+0.13% vs 40% vs 1400% rms).</p>
+
+<div class="good">
+<span class="v-label">M4.1 verdict — act_lag_enable = False, all three joints</span>
+Three independent falsifiers agree. (1) The step ring frequency <em>moves with
+kp</em> (e.g. knee 25.9 → 33.0 → 44.5 rad/s for kp 8/16/32) — it is the
+closed-loop servo mode, not a command prefilter, whose ring would sit at a
+kp-independent frequency. (2) M1.1 already measured 2.4–2.8 ms action→onset on
+every joint; a ω≈21–38 rad/s prefilter would show 25–50 ms. (3) Joint fits
+offered a free prefilter drive it transparent and gain &lt;10% of residual. The
+old fits (ω=21/37.9/27.6) were the plant's own kp-servo ring seen through
+old-bus latency and misattributed to the command path.
+</div>
+
+<div class="table-wrap"><table>
+<tr><th>Joint (motor-space)</th><th>Best model</th><th>rms</th><th>I</th><th>b (Nm·s/rad)</th><th>C (Nm)</th><th>Extra loop lag</th></tr>
+<tr><td>hip_pitch 101, kp 4/8/16</td><td>rigid</td><td class="num">7.5%</td><td class="num">19.8e-3 <sup>†</sup></td><td class="num">0.217 <sup>†</sup></td><td class="num">0.038</td><td>none (t_l → 0)</td></tr>
+<tr><td>hip_roll 103, kp 3/6/12</td><td>fbfilt (marginal)</td><td class="num">12.3%</td><td class="num">31–34e-3</td><td class="num">0.04–0.22</td><td class="num">~0.11*</td><td>11–13 ms, <strong>confounded</strong> — see below</td></tr>
+<tr><td>knee 102 (belt-on), kp 8/16/32</td><td>rigid</td><td class="num">10.5%</td><td class="num">15.2e-3</td><td class="num">0.035–0.055</td><td class="num">0.12–0.14</td><td>none (t_l 0.5 ms)</td></tr>
+</table></div>
+<p>*hip_roll Coulomb from the model-free settle sweep: the settle deficit
+scales exactly as C/kp across kp 3/6/12 (C = 0.108/0.120/0.092 Nm) — it is
+stiction, not a gravity spring. Knee's C≈0.13 vs hip_pitch's 0.04 is the belt
+drag showing up where it should (P5 will split belt-off/on). <em>Review 08-18:
+the roll <strong>curve-fit</strong> C is 0.009 in the winning model and never
+exceeds 0.068 in any of the three — the ~0.11 above is the settle-sweep number
+only. The fbfilt &ldquo;win&rdquo; is a b↔C trade (b 0.043→0.219 as C 0.068→0.009)
+for 1.0 pt of rms, not a lag detection. P5's breakaway 0.187 is the number to
+carry.</em></p>
+
+<p><sup>†</sup> <strong>Superseded — do not pull from this row.</strong> P5's
+engaged measurement puts hip_pitch at I = 31.0e-3 (bootstrap CI 29.6–32.8) and
+b ≈ 0.04, so the kp-sweep b = 0.217 is high by ~6× and its I low by ~1.6×. The
+hip_roll row's 31–34e-3 <em>is</em> still the recommended central (P5 could not
+resolve roll inertia on this rig); the knee's I is superseded by ≈21e-3. Three
+statuses in one table — read the <a href="#review">review</a> before writing any
+of it into the cfg.</p>
+
+<div class="callout"><strong>Base-condition sensitivity (hip_roll):</strong> a
+deliberate perturbation during capture — hand-supporting the torso so the
+chassis tether went loose — moved overshoot roughly 2× vs tether-tight. The
+stand/tether participates in the roll mode, so hip_roll's fitted I and its
+marginal 11–13 ms "lag" carry an asterisk; the RS01 joints show clean
+kp-scaling and no lag, so the effect does not contaminate the headline verdict.
+Remaining bench captures should be run tether-tight, hands off, one condition
+per battery.</div>
+
+<div class="callout"><strong>Inertia: narrowed, not resolved.</strong> The
+kp-triplet fit puts hip_pitch at 19.8e-3 (single-kp fits: 15–16e-3) vs the
+M3.1 ballistic ≥43e-3 — same near-zero pose per the operator, so the earlier
+pose-dependence reconciliation is dead and the gap (now 2.2×, was 5×) is
+method-dependent. P5's coast-down gives a third, independent method; resolve
+there before feeding sim <code>armature</code>/link inertia (Phase 8 gate
+input).</div>
+
+<h2><span class="phase-no">Phase 5</span> — Friction &amp; inertia bench <span class="chip closed">closed (session 3)</span></h2>
+<p>All captures tether-hung, commanded-τ only (June's <code>friction_id.py</code>
+is superseded — it used <code>torque_fdb</code> as truth). Two protocols, both
+synthetic-validated before real data: a slow τ-ramp breakaway (gravity cancels
+by direction symmetry) and an M3.1-envelope ballistic battery
+(<code>coast_down_bench.py --mode ballistic</code>: strictly alternating short
+bursts, levels 1–4 Nm, logged PD brake, offset-start reps). Fit:
+<code>data/coastdown_fit.py</code> burst-primary regression, 8 selftest cases.</p>
+
+<div class="good">
+<span class="v-label">Headline — the 19.8 vs ≥43e-3 inertia conflict is method bias, not physics</span>
+Burst traces exposed a <strong>lash-engagement onset transient</strong> on
+hip_pitch (first ~20 ms the rotor accelerates alone at ~τ/12e-3 through gear
+lash, then dumps momentum into the leg). Synthetic replay proved (a) the M3.1
+naive slope method inflates I under damping+lash (a planted 20e-3 reads 42.9),
+and (b) the kp-sweep's small-signal ring rides the rotor side of the lash.
+Engaged large-signal inertia, the launch-relevant number: <strong>hip_pitch
+31–40e-3</strong> (burst fit 31, naive bracket 39–40), <strong>knee belt-on
+≈21e-3</strong> (vs kp-sweep 15.2 — same ~35% engaged-vs-small-signal pattern
+on both RS01 joints). The two-mass (rotor–lash–leg) character itself is now a
+live candidate for the un-caught plant gap.
+</div>
+
+<div class="table-wrap"><table>
+<tr><th>Joint (motor-space)</th><th>I engaged</th><th>C static</th><th>C kinetic</th><th>b (Nm·s/rad)</th><th>Notes</th></tr>
+<tr><td>hip_pitch 101</td><td class="num">31–40e-3</td><td class="num">0.146</td><td class="num">0.144</td><td class="num">0.03–0.04</td><td>C_k = C_s cross-validation; kp-sweep b=0.217 was artifact — b is SMALL</td></tr>
+<tr><td>knee 102 (belt-on)</td><td class="num">≈21e-3</td><td class="num">0.130</td><td class="num">~0.12–0.14</td><td class="num">~0.02</td><td>ballistic C polluted by dynamic hip-reaction through belt (held hip yields ∝τ) — C from breakaway + P4 preview; belt-off split pending</td></tr>
+<tr><td>hip_roll 103</td><td class="num">26–40e-3 (unresolved)</td><td class="num">0.187</td><td class="num">~0.20</td><td class="num">~0</td><td>friction well-measured (±0.004!); inertia unresolvable on this rig — tether damps the roll mode (R² 0.41), hand-held adds base motion (R² 0.65, biased breakaway). Keep P4's 31–34e-3 central, wide DR</td></tr>
+</table></div>
+
+<div class="callout"><strong>Capture lessons (paid for twice):</strong> the
+tether-hung torso is a free-floating base — sustained torque swings it, window
+bounds lie, and the thigh found the torso hard in both a wide-travel coast and
+a constant-τ ping-pong. The ONLY validated envelope on this rig is M3.1's:
+strictly alternating short bursts, tight travel, immediate brake, stall guard
+(never press into contact). One-way bursts alias viscous b into the gravity
+slope (fit returned b=−0.15) — offset-start reps that burst through home are
+mandatory. Every fit change was synthetic-validated before touching real data;
+the selftest caught two real bugs (SG-window smearing: 8% I bias; the b/g1
+degeneracy) before they could ship wrong numbers.</div>
+
+
+<h2><span class="phase-no">Phase 6</span> — Mass, balance point, init_h <span class="chip closed">closed (session 4)</span></h2>
+<p>Executed 2026-08-18. The straightedge balance test was consciously dropped:
+with no independent way to verify the joint zeros, it cannot separate its own
+error sources (operator decision; revisit if the next CAD revision adds
+zero-position fixtures). Its job — decomposing the +0.075 static bias — was
+done a different way, using the crawl pose as a self-supporting attitude
+reference.</p>
+
+<h3>M6.1 — Weigh-in</h3>
+<p>Hardware as flown: <strong>5.5 kg</strong> (operator scale). URDF/USD link
+total: <strong>5.195 kg</strong> → hardware is <strong>+5.9%</strong>, past the
+5% recenter threshold. P7: recenter <code>dr_mass_mult</code> from [0.88, 1.12]
+to <strong>[0.94, 1.18]</strong> (same ±0.12 width, centered on 1.059). The
+missing ~0.30 kg is unmodeled hardware (battery, cables, boards) whose
+<em>location</em> is unknown — it also shifts CoM, so keep
+<code>dr_com_offset</code> DR honest rather than shrinking it.</p>
+
+<h3>M6.3 — init_h</h3>
+<p><strong>Already closed by the 08-16 config fix; verified analytically</strong>
+(<code>data/_p6_init_h_check.py</code>). Training init_h = FK height with
+±0.08 rad orientation noise → mean 0.4401, std 0.0058 — matches the checkpoint
+normalizer's slot-31 stats exactly. The old deployed <code>SPAWN_HEIGHT=0.434</code>
+lands at z=−1.05σ — <em>this was the entire −1.07σ obs-contract finding</em>.
+The current deployed 0.4401 lands at z=−0.01. No physical measurement needed;
+the channel is a constant the policy compares against a constant.</p>
+
+<div class="good">
+<span class="v-label">M6.2-substitute verdict — the −0.089 IMU trim over-corrects by ~0.057; most of the +0.075 "static bias" is an obs-trim artifact</span>
+The crawl pose is self-supporting (floor + geometry set torso attitude — no
+hands, and the robot is <em>zeroed at crawl</em> so the pose is the zero
+reference itself). Hardware, motors unpowered, 15 s IMU log
+(<code>control/crawl_imu_log.py</code>): RAW pg = (+0.0957, −0.0045), sd
+0.0003, zero drift — rock solid. Sim replica of the same rest
+(<code>data/_crawl_imu_reference.py</code>, strong-PD hold, seeded near the
+hardware attitude): the converged basin reads pg = (+0.1280, −0.0033), four
+envs agreeing to ±0.0002. Difference = <strong>IMU mounting offset ≈
+(−0.032, −0.001)</strong> — a third of the deployed
+<code>IMU_PG_OFFSET = −0.089</code>, which came from <em>hand-held</em>
+standing launches (the same hand-held data class every bench phase has had to
+discard). Propagating to the 08-13 knife-edge measurement: raw balance-point
+attitude = +0.075 − 0.089 = −0.014; subtracting the crawl-derived mounting
+offset leaves a <strong>physical forward-CoM bias of only ≈ +0.018
+(≈1.0°)</strong> — <em>inside</em> the trained bias DR. Under the deployed
+−0.089 trim the policy sees the balance point at +0.075; under a −0.032 trim
+it would see +0.018.
+</div>
+<ul>
+  <li><strong>Uncertainty:</strong> the sim crawl rest carries collision-mesh
+  and settled-pose error (sim settled ±0.07 rad off nominal crawl; rest pitch
+  7.4° vs hardware 5.5°). Read the mounting offset as −0.03 ± 0.03: even the
+  pessimistic end says the −0.089 trim over-corrects.</li>
+  <li><strong>Cheap discriminator (2 min, user):</strong> flip the robot on
+  its back (motors off) and run
+  <code>python crawl_imu_log.py --tag on_back</code>. Sim reference:
+  pg = (−0.9685, 0.0000, −0.2489), converged to ±0.0002 and independent of
+  legs/zeroing entirely (single rigid torso). Compare <em>pg_z</em> (x is
+  cos-suppressed at that attitude): a mounting pitch δ shifts pg_z by ≈0.97δ,
+  so the −0.032 hypothesis predicts hardware pg_z ≈ −0.218 vs −0.249 sim.
+  Offsets agreeing across crawl and supine ⇒ fixed mounting rotation,
+  subtract with confidence; disagreeing ⇒ contact-geometry error, keep the
+  trim empirical.</li>
+  <li><strong>Do not edit <code>IMU_PG_OFFSET</code> yet</strong> — the fall
+  replays (Phase 8 gate) must run against the contract the falls were recorded
+  under. Recalibration is a Phase 10 item, after the supine check.</li>
+  <li><strong>Fall-mechanism note:</strong> the over-trim makes the policy
+  believe it leans <em>forward</em> more than it does; its correction pushes
+  the CoM back — yet hardware falls pitch-<em>forward</em>. The static bias
+  was already insufficient in the sim sweep (≤5% die); this reframing further
+  demotes it. The un-caught launch transient and leg-coupled dynamics remain
+  the live suspects for Phase 8.</li>
+</ul>
+
+<h2>Next — remaining before Phase 9 <span class="chip closed">P9 LAUNCHED 08-18</span></h2>
+<ul>
+  <li><strong>P9 running:</strong> fresh train, lineage <code>p9_replant</code>
+  (<code>RL/logs/rsl_rl/p9_replant/</code>), 32768 envs, entropy 0.003 /
+  desired_kl 0.008 (fresh values), <strong>pg-bias DR ±0.10</strong> — see next
+  item. First iterations healthy (banner: act_lag OFF, joint delay 1,
+  mass ×[0.94,1.18], DR write path alive).</li>
+  <li><strong>Supine IMU cross-check: DEAD — physically impossible</strong>
+  (operator: the Pi and its wiring live on the torso's back; the robot cannot
+  rest there, and propping it would measure the prop). Consequence, decided
+  08-18: <code>IMU_PG_OFFSET</code> stays at the deployed −0.089 (falls-replay
+  contract preserved, no hardware change), and P9 trains with
+  <code>dr_proj_grav_bias_max = 0.10</code> — the G2i
+  (<code>…_imuoffset010</code>) recipe that already flew. The crawl-derived
+  mounting estimate (−0.032 ± 0.03) stays on record, unconfirmed; revisit only
+  if a second self-supporting attitude ever becomes available (e.g. a
+  motor-held kneel, operator-run).</li>
+  <li><strong>Knee belt-off: DOWNGRADED — not worth the disassembly.</strong>
+  The belt (PU+steel) only comes off with the thigh, so the direct rotor
+  measurement is not cheap. The no-disassembly 80% substitute: rerun the knee
+  ballistic with the hip held stiff —
+  <code>python coast_down_bench.py --motor 102 --hold 101 --hold-kp 40 --tag
+  belt_on_stiff</code> (new flag, synced to the Pi). If the fitted I drops
+  toward ~15e-3, the 19.4e-3 excess was hip-yield coupling; if it stays
+  ~19–21e-3, the knee rotor genuinely reads high (per-unit or τ-scale) — either
+  way inside the trained armature DR (×0.7–1.3 spans 25–47e-3 about the
+  36e-3 central). Optional, mid-training, operator-run. Take the true belt-off
+  data opportunistically if the thigh ever comes off for other reasons.</li>
+  <li><strong>M3.2 speed envelope (still deferred):</strong> launch speeds sit
+  deep inside the measured full-torque region.</li>
+</ul>
+<div class="callout"><strong>Where the fall hunt stands after today:</strong> every
+plant-side suspect with a proposed mechanism is now dead (filters, delivery
+ratio, torque ceiling, limits, launch/IMU/DR) except the partial static bias and
+the un-caught launch transient. That raises the stakes on P4–P6 precision and on
+the Phase 8 replica gate: if the refreshed plant still balances where hardware
+falls, the gap is in something no single-joint bench test excites — leg-coupled
+dynamics, contact, or the launch sequence itself.</div>
+
+<h2 id="review">Phases 0–6 review <span class="chip pending">audit 08-18, no reruns</span></h2>
+<p class="subtitle">Pre-Phase-7 completeness and correctness pass over everything
+above: runbook coverage, internal consistency, and independent recomputation from
+retained raw data. Nothing below is a new experiment. Three claims are corrected,
+two gaps are hard blockers, and one previously unflagged finding changes what
+Phase 7 must write.</p>
+
+<h3>What survives verification</h3>
+<ul>
+  <li><strong>Engaged inertia is solid.</strong> Pooling the two well-conditioned
+  hip_pitch ballistic runs (<code>bal2</code>+<code>bal3</code>, 926 burst samples,
+  9 torque levels each direction) gives <strong>I = 31.0e-3</strong> with a
+  rep-bootstrap 5–95 CI of <strong>29.6–32.8e-3</strong> (±5%). Knee 20.7e-3
+  (CI 19.6–21.8). The P5 headline figures are reproducible.</li>
+  <li><strong>M1.3 soak reproduces exactly</strong> from the retained per-tick CSV:
+  59,992 ticks, 100.0000% six-of-six replies, busy p50 2.371 ms, one 95.8 ms stall.</li>
+  <li><strong>M2.1's 0.70 ms is genuinely measured.</strong> Independent per-dwell
+  lock-in on <code>kdchirp_101_2</code> gives 0.704 ms mean (sd 0.041, 13 dwells),
+  0.7% from the one-pole prediction for α=0.1 at 13 kHz. The <code>spd_filt</code>
+  hypothesis stays dead on this evidence alone.</li>
+  <li><strong>Breakaway C<sub>s</sub> is correctly computed and correctly sourced.</strong>
+  The direction-symmetry cancellation at <code>friction_breakaway.py:15</code> is
+  sound (both directions yield opposite-signed torques; symmetric and magnitude
+  formulas agree to 4 digits), and the report quotes <code>brk_103_hang</code>
+  (0.187) rather than the degenerate <code>hang_hold</code>. Published C values stand.</li>
+  <li><strong>P6 mass and init_h.</strong> +5.9% recentring of <code>dr_mass_mult</code>
+  to [0.94, 1.18] at fixed width is exactly the runbook's instruction; <code>init_h</code>
+  verified against <code>SPAWN_HEIGHT = 0.4401</code>.</li>
+</ul>
+
+<h3>Corrections to claims above</h3>
+<div class="table-wrap"><table>
+<tr><th>Claim as published</th><th>Correction</th></tr>
+<tr><td>M2.3 &ldquo;1.7% rms, ref filter fitted to exactly 0 ms&rdquo;</td><td><strong>Does not reproduce.</strong> The only available fitter on <code>step_103</code>+<code>step_103_2</code> (32 reps) gives <strong>21.6% rms</strong>, and the prefilter lands at a 27.2 ms rise with z<sub>p</sub> pinned at its upper bound — an at-bound optimizer artifact, not a measurement. The <em>conclusion</em> likely holds (27 ms of rise buying 0.4% of residual is not evidence of a real filter), but the stated evidence is wrong and &ldquo;fitted to exactly 0 ms&rdquo; should be struck.</td></tr>
+<tr><td>Bonus physics &ldquo;8.48e-3 / 4.73 Nm/rad, independently validating the cfg's 8.4e-3&rdquo;</td><td><strong>Retract.</strong> Refitting the real chirp pins k<sub>g</sub> at <em>exactly</em> 0.000 in every subset at 28–32% residual, so 4.73 Nm/rad has no support in that dataset. The reported pair sits within 0.3% of the fitter <em>self-test's synthetic truth</em> (8.50e-3, 4.70). Most economical reading: self-test output was transcribed as a real-data result. Separately, even the charitable reading compares unlike quantities — a small-signal rotor-side FRF against a composite armature (own rotor 4.2e-3 + knee rotor reflected c²·7.81e-3). The numerical agreement was coincidence, and it closed a P5 checklist item early, suppressing the ~4× gap P5 then found.</td></tr>
+<tr><td>kd brake &ldquo;3.4% undershoot at kd=2, none at kd=0.5&rdquo;</td><td><strong>Below the noise floor; supports nothing.</strong> Settled-tail velocity sd is 0.084 rad/s = 7.4% of v<sub>peak</sub>, giving a ~22% pure-noise undershoot floor — 6× the claimed effect; 3.4% is under 2 velocity LSBs. The two kd conditions are statistically indistinguishable, and at short windows kd=0.5 is the <em>larger</em>. The 13.6% counterfactual exists only in this HTML, depends on I=8.48e-3, and collapses to ~0.00% at the engaged 31e-3. Drop this from &ldquo;three independent measurements&rdquo; — M2.1 rests on the chirp lock-in, which is enough.</td></tr>
+<tr><td>M1.1 &ldquo;N≥50 both directions&rdquo;</td><td>hip_pitch's 2.36 ms rests on <strong>30 single-direction reps</strong> — all 30 <code>+</code> reps failed onset detection and <code>lat_101.npz</code> stores an empty results array. Detector failures are direction-skewed on every joint, so survivors are a biased subset. Also <code>lat_103_2</code>, cited as source data, gives mean 9.10 ms / p95 19.50 ms and <em>fails</em> the 10 ms gate; only the agreeable run is quoted. Finally the detrended-quadratic onset method biases <strong>+1 to +2 ms late</strong> (synthetic ground truth), so true dead time is ~1–2 ms below the quoted figures. All three effects are small enough that the 0–2 tick mapping survives, but the numbers are upper bounds, not estimates.</td></tr>
+<tr><td>M3.1 &ldquo;full delivery to 17 Nm, effective Kt ≈ 0.74, <code>saturation_effort</code> validated&rdquo;</td><td><strong>Partly circular.</strong> The probe infers τ from I·α with a self-derived I, and P5 later revised that same inertia; rescaling by 31/43 turns &ldquo;17 Nm&rdquo; into ≈12.3 Nm, landing on the 12.9 Nm clamp the report declares dead. The Kt figure is arithmetically just 17/23 = 0.739, i.e. what you get by <em>assuming</em> full delivery at the ceiling. What genuinely stands is the <em>shape</em> result — α ∝ commanded τ with no break at 12.9 — which does falsify a clamp engaging inside the swept range, and the independent physics argument for ~full delivery is on record elsewhere. Re-derive delivered τ with P5's engaged I, and cite the physics argument rather than the Kt number.</td></tr>
+<tr><td>Phase 7 row, <code>dr_action_delay</code> &ldquo;→ 0 / 1&rdquo; and the delay taps &ldquo;→ 0–1 tick&rdquo;</td><td><strong>Wrong direction; fixed in the row above.</strong> The runbook's mapping rule is min = measured floor <em>rounded up</em>, max = floor + 1, so ⌈2.36/10⌉ gives <strong>1 / 2</strong> — the values already in cfg. Proposing 0 would also revert two deliberate locks (<code>:946</code> &ldquo;was 0 — never instant&rdquo;; <code>:951-953</code> the zero-latency IMU reflex that produced the 2 Hz wobble); a 10 ms period plus ~2.5 ms transport is never instant. M1 shrinks the <em>assumption</em> from 15 ms to ~2.4 ms without moving the bucket. The one tap that does move is <code>dr_joint_delay</code> 2 → 1: it was held at 2 to model a 10 ms IMU-vs-encoder skew that M1.2 measures at 1.96 ms.</td></tr>
+<tr><td>Phase 4 table, hip_pitch b = 0.217</td><td>Superseded by P5 (b ≈ 0.03–0.04) and already called an artifact at the P5 headline — but the P4 table carries no annotation, so anyone pulling numbers from it is off by 6×. Same table's I values are superseded for hip/knee while its hip_roll 31–34e-3 is <em>kept</em> as the P5 central: one table, three statuses, unmarked.</td></tr>
+</table></div>
+
+<h3>The friction split is not identifiable — and two DR bands are wrong</h3>
+<p>Recomputation shows <code>C</code> and <code>b</code> trade off along a near-null
+direction (weakest singular vector loads −0.57 on C against +0.74 on b;
+corr(sgn v, v) = +0.70 because captures are mostly one-directional at high speed).
+Consequences: hip_pitch <code>b</code> flips sign between two runs of identical
+configuration (<code>bal2</code> −0.045, <code>bal3</code> +0.041), and pinning C at
+the breakaway value does not rescue it. Knee ballistic <code>C</code> comes out
+<strong>negative with its whole CI below zero</strong>, which is unphysical and
+independently confirms the report's own &ldquo;polluted by hip reaction through the
+belt&rdquo; caveat. Two of the four hip_pitch runs (<code>bal_101_kneeheld</code>,
+<code>kneelimp</code>) are simply under-conditioned — 133–148 samples over 6 levels
+with a gap between −2 and +2 Nm — and should not be quoted at all.</p>
+<p>What <em>is</em> robust is the pooled hip_pitch viscous term:
+<strong>b = 0.043, CI 0.008–0.062</strong>, which excludes zero. Against the cfg:</p>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>cfg central</th><th>DR box (×0.5–2.0)</th><th>P5 measured, <em>joint-space</em></th><th>Verdict</th></tr>
+<tr><td><code>viscous_friction</code> hip_pitch</td><td>0.003</td><td>0.0015–0.006</td><td>0.043</td><td><strong>7.1× above the ceiling</strong></td></tr>
+<tr><td><code>viscous_friction</code> knee</td><td>0.003</td><td>0.0015–0.006</td><td>0.029 <span class="muted">(0.016 motor)</span></td><td><strong>4.8× above</strong></td></tr>
+<tr><td><code>friction</code> knee</td><td>0.06</td><td>0.03–0.12</td><td>0.177 <span class="muted">(0.130 motor)</span></td><td><strong>1.5× above</strong></td></tr>
+<tr><td><code>friction</code> hip_pitch / hip_roll</td><td>0.12</td><td>0.06–0.24</td><td>0.146 / 0.187</td><td>inside</td></tr>
+</table></div>
+<p class="muted">Both knee rows are reflected through G² and G respectively — the cfg
+fields are joint-space, so a motor-space comparison understates the knee by 1.86× on
+viscous and 1.36× on Coulomb. Quoting the knee in motor-space is exactly the mistake
+the next section warns about, and it flips the knee <code>friction</code> verdict from
+&ldquo;negligible&rdquo; to genuinely outside.</p>
+<p>So the runbook's premise &mdash; &ldquo;the 0.5–2× DR likely covers reality; today we
+move the centers, not the bands&rdquo; &mdash; <strong>is falsified for the viscous term</strong>.
+Hip Coulomb is fine; the knee's is not. Every policy above was trained with viscous
+damping at most 0.006 while the joint measures 0.043; the bands must move, not just
+the centers. This is a
+live candidate for the plant gap the campaign is hunting, and it was not previously flagged.</p>
+
+<h3>Unit convention — the write-time hazard for Phase 7</h3>
+<p>Isaac Lab's <code>armature</code>, <code>friction</code>, <code>dynamic_friction</code>,
+<code>viscous_friction</code> are per-DOF <strong>joint-space</strong> tensors
+(<code>actuator_base.py:94-104</code>). Every P5 number above is <strong>motor-space</strong>.
+hip_pitch and hip_roll are direct-drive so they transfer unchanged, but the knee needs
+G = 22/30 = 0.7333: I<sub>joint</sub> = I/G² (×1.860), C<sub>joint</sub> = C/G (×1.364),
+b<sub>joint</sub> = b/G² (×1.860). A naive write is wrong by those factors — knee C
+0.130 → <strong>0.177</strong>, knee b 0.016 → <strong>0.029</strong>, knee I 20.7e-3
+→ <strong>38.5e-3</strong>. The cfg already
+uses joint-space with exactly these reflections (knee armature 7.81e-3 = 4.2e-3/G²,
+<code>saturation_effort</code> 23.2 = 17/G, <code>velocity_limit</code> 20 = 27.5·G),
+which is how the convention was confirmed. <code>belt_knee_actuator.py</code> contains
+no G at all and offers no protection: whatever is written into the knee column is
+interpreted as knee joint properties, and c enters only the velocity used for the DC
+envelope, never the friction or armature terms.</p>
+<p>Two traps follow. <strong>(1)</strong> Knee <code>friction</code> 0.06 and
+<code>dynamic_friction</code> 0.05 sit <em>below</em> hip's 0.12/0.10 where the
+reflection demands <em>above</em> — a pre-existing wrong-direction belt conversion
+(0.12 × 0.5), inconsistent with the armature convention three lines up. Recompute
+these; do not preserve the ratio. <strong>(2)</strong> The cfg's 8.4e-3 hip armature
+deliberately includes the knee rotor reflected through the belt anchor (c²·7.81e-3 ≈ 4.2e-3),
+and P5's engaged hip inertia was measured <em>belt-on</em>, so it already contains that
+same term. Writing I<sub>engaged</sub> − I<sub>link</sub> while keeping the reflection
+counts the knee rotor twice.</p>
+
+<h3>Coverage gaps</h3>
+<ul>
+  <li><strong>Phase 0 safety items never mentioned:</strong> &ldquo;robot on the stand,
+  e-stop tested, spare fuses at hand.&rdquo; E-stop function was never verified in a
+  campaign that ran 17 Nm bursts. Worse, the stand is <em>asserted</em> in the meta
+  header (&ldquo;on stand&rdquo;) and used to explain hip_roll's 11–13 ms lag as
+  &ldquo;stand compliance&rdquo;, while the body states all captures were tether-hung
+  and the torso a free-floating base. That is a different and worse confound, and it
+  makes the runbook's Phase 10 re-entry protocol (hang → supported stand → free stand)
+  unexecutable as written.</li>
+  <li><strong><code>make_legacy_actuators</code> is in no edit list.</strong> The runbook
+  says centrals go in <em>both</em> actuator factories. That path is what
+  <code>sysid_replay_policy_log.py --actuator legacy</code> uses, and Phase 8's replica
+  gate runs through it — updating only the belt factory leaves the A/B arm on stale
+  friction. (<code>_hip_roll_actuator()</code> is shared, so roll propagates for free;
+  hip_pitch and knee do not.)</li>
+  <li><strong>Dropping <code>dr_act_lag_*</code> removes 12 privileged-obs dims.</strong>
+  <code>priv_obs_dim = 78</code> must go to 66 or the dims must be pinned at 1.0, and the
+  drop touches <code>rl_env_p6.py</code> at the DR key list, critic slices, sampling,
+  logging, and <code>_priv_perm/_priv_sign</code>. It is a decision, and it is missing.</li>
+  <li><strong><code>armature</code> is the gating unmeasured field.</strong> What exists
+  is engaged joint inertia; the sim needs I<sub>engaged</sub> − I<sub>URDF link</sub>,
+  still listed as next-session prep. Knee awaits belt-off, hip_roll's I is declared
+  unresolvable on this rig, and rotor-alone ~12e-3 vs cfg 4.2e-3 is unreconciled.</li>
+  <li><strong>M1.3's gated quantity was never reported</strong> — the gate is
+  &ldquo;&lt;0.1% of ticks over 10 ms&rdquo; and the procedure asks for a &gt;5 ms outlier
+  count; what was reported is reply completeness and busy p50. Also &ldquo;3.6 ms nominal&rdquo;
+  vs busy p50 2.37 ms is left unreconciled (different quantities; 59,992 ticks / 600 s
+  confirms the period is 10 ms). <strong>M1.2's raw arrays were not retained at all</strong>,
+  so 1.96 ms and r=0.96 are permanently unauditable — and the M2.1 verdict box cites
+  M1.2 as 0.70 ms while the M1.2 claim itself is 1.96 ms. <strong>M1.2 also delivered
+  only the <em>relative</em> skew</strong> — the runbook additionally asked for absolute
+  per-path staleness by pairing with M1.1's clock, which was never reported. That is why
+  the corrected <code>dr_joint_delay</code> = 1 rests on the runbook's round-up floor
+  rather than on a measured per-path number; both paths round into the same bucket either
+  way, so the write is safe, but it is not measurement-backed.</li>
+  <li><strong>M2.1 was never stated for the EL05.</strong> The verdict names the RS01's
+  <code>spd_filt_gain=0.1</code>; hip_roll's 0.5 is cleared only by inference.</li>
+  <li><strong><code>dr_proj_grav_bias_max</code> has an ordering inversion.</strong>
+  Keeping 0.03 is conditional on an <code>IMU_PG_OFFSET</code> recalibration deferred to
+  Phase 10, resting on a finding that still awaits the supine check. Phase 9 would train
+  against a hardware change scheduled after training, contingent on a test not yet run.
+  If the supine check kills the finding, the run is wasted.</li>
+</ul>
+
+<div class="callout"><strong>Net effect on Phase 7 readiness:</strong> the
+&ldquo;closed&rdquo; chips on Phases 3, 5 and 6 are ahead of the evidence — P3 has M3.2
+deferred, P5 has the belt-off split pending and hip_roll's I unresolvable, P6 has the
+supine check pending. Of the fields P7 must write, only <code>dr_joint_delay</code>
+(2 → 1, the sole tap M1 actually moves — the other two stay put) and
+<code>dr_mass_mult</code> are measured and unambiguous; <code>saturation_effort</code>
+needs re-deriving against P5's inertia, the friction fields need the belt-space
+conversion plus <em>widened</em> viscous bands, and <code>armature</code> is not yet
+computed. Recommended order before P7: (1) fix the viscous DR bands, since that is the
+one finding that could itself be the plant gap; (2) compute armature properly, watching
+the double-count; (3) the two short hardware items already listed (knee belt-off, supine
+IMU); (4) settle one number per cfg field — the P7 row and the P5 table currently
+disagree in the third digit on C and b.</div>
+
+<h2><span class="phase-no">Phase 7</span> — Env &amp; actuator edits <span class="chip closed">shipped (session 6, 08-18)</span> <span class="chip lead">rotor coupling found</span></h2>
+<p>Commit <code>2d0441f</code>. The armature computation the review called the
+gating field turned into the biggest finding of the campaign: <strong>the
+rotor-side inertia is 3–4.6× the assumed vendor number, and its off-diagonal
+belt-coupling term — absent from every sim the policies trained in — is a hip
+torque the size of the hip's own commands, peaking at the fall-initiation
+time.</strong></p>
+
+<h3>Armature decomposition (bench modes vs URDF links)</h3>
+<p>Full 3D FK over the URDF chain (<code>data/_p7_armature_from_urdf.py</code>)
+puts the <em>link</em> contribution at only 17.1e-3 of the measured 31.0e-3
+hip mode and 2.50e-3 of the knee's 38.5e-3 joint-space total. The URDF's
+first moments check out against the bench gravity slope (0.913 vs 0.985
+Nm/rad — the 7% shortfall matches the +5.9% weigh-in), so the deficit is
+rotating inertia, not link mass. Solving both benches:</p>
+<div class="table-wrap"><table>
+<tr><th>Quantity</th><th>Value</th><th>Corroboration</th></tr>
+<tr><td>I<sub>r</sub> hip RS01 (output)</td><td class="num">13.9e-3 (CI 12.5–15.7)</td><td>P5 lash transient: rotor alone at ~τ/12e-3</td></tr>
+<tr><td>I<sub>r</sub> knee RS01 (output)</td><td class="num">19.4e-3 (CI 18.3–20.5)</td><td>kp-sweep small-signal 19.8e-3 = the rotor side of the lash</td></tr>
+<tr><td>Model closure</td><td colspan="2">reproduces knee-held 30.9e-3, knee-limp 30.6e-3 (Schur), knee-mode 38.5e-3 — and predicts the P5 "held vs limp changed nothing" observation. The old 4.2e-3 assumption predicts 21e-3 for both, 10e-3 below the bench.</td></tr>
+</table></div>
+<p>New cfg armature (both factories): <strong>hip 33.2e-3</strong> (13.9 own +
+c²·36.0 reflected), <strong>knee 36.0e-3</strong> (I<sub>r</sub>/G²),
+<strong>roll 7.0e-3</strong> (P4 total 31–34e-3 − URDF links 25.2e-3,
+tether-confounded → wide DR). Previous values 8.4 / 7.81 / 0.7e-3 — the
+armature DR box (×0.7–1.3) never contained the real plant, same finding class
+as the viscous band. Caveat carried in the factory header: all commanded-τ
+benches share the per-motor torque-scale degeneracy; armature here calibrates
+commanded-τ → q̈, which is exactly what the replica drives with. Hip-vs-knee
+rotor estimates differ 40% (same motor model) — <code>dr_armature_mult</code>
+kept wide and retagged LOW→HIGH.</p>
+
+<div class="verdict">
+<span class="v-label">The off-diagonal — answer to "knee motor at the hip chassis vs sim at the knee"</span>
+The placement difference IS exactly representable for a rigid belt. The rotor
+spins at θ<sub>m</sub> = (q<sub>kn</sub> + c·q<sub>hp</sub>)/G, so its full
+joint-space inertia block is (I<sub>r</sub>/G²)·[[c², c],[c, 1]]: the diagonals
+are the cfg armature entries, and the off-diagonal
+<strong>c·I<sub>r</sub>/G² = 26.4e-3</strong> is implementable as a plant
+force — <code>BeltKneeDCMotor.rotor_coupling=True</code> now applies
+τ<sub>hp</sub> −= m<sub>x</sub>·q̈<sub>kn</sub> (and vice versa) post-clip,
+with m<sub>x</sub> = c·armature<sub>kn</sub> so it scales with the per-env DR
+draw. On the 08-13 fall logs (<code>data/_p7_offdiag_phantom.py</code>, 28
+leg-windows) this missing torque has <strong>rms equal to the hip's own
+commands (median ratio 0.96), peaks ~5 Nm (p90 7.6)</strong>, and in the traces
+it <strong>peaks at t = 0.16–0.20 s — the measured fall-initiation window</strong>
+(0.161 s ± 15 ms, pitch-first). It requires simultaneous two-joint
+acceleration, which is why every single-joint bench test was structurally blind
+to it — matching the survivor profile the hypothesis board predicted
+("something no single-joint bench test excites"). Pre-P7 the term was believed
+to be 5.7e-3 (ignorable); the rotor re-measurement multiplied it by 4.6.
+</div>
+
+<h3>Everything else written in P7</h3>
+<ul>
+  <li><strong>Frictions, joint-space, both factories</strong> (runbook: the
+  legacy factory feeds the Phase 8 A/B): C<sub>s</sub> 0.146/0.177/0.187,
+  C<sub>k</sub> 0.144/0.170/0.185, b 0.043/0.030/0.003 (hp/knee/roll; knee
+  ×1.364 / ×1.860 belt reflections). Centers moved onto the measured values —
+  the ×0.5–2 bands now contain reality by construction.</li>
+  <li><strong>act_lag_enable=False</strong> (P4 verdict); the four
+  <code>dr_act_lag_*_mult</code> bounds pinned at 1.0 so priv-obs dims [61:73]
+  stay allocated as constants — no critic renumbering, no env-code edits.</li>
+  <li><strong>dr_joint_delay 2 → 1</strong> (M1.2: skew 1.96 ms = 0.2 tick);
+  action 1/2 and IMU 1/1 unchanged per the review.</li>
+  <li><strong>dr_mass_mult → [0.94, 1.18]</strong> (P6 weigh-in).</li>
+  <li><code>sysid_replay_policy_log.py</code> no longer pins the old armature
+  defaults — factory defaults rule unless <code>--hip_armature</code> given.</li>
+  <li>Smoke test (<code>_env_smoke_belt.py</code>, 8 envs, 25 steps): boots,
+  steps, DR write path alive, act_lag OFF banner confirmed.</li>
+</ul>
+
+<h2><span class="phase-no">Phase 8</span> — Replica gate, first pass <span class="chip lead">moved decisively — not yet crossed</span></h2>
+<p>Same test as 08-13 (<code>data/_launch_match_sim.py</code>, G2i model_4760,
+512 envs, full DR), only the plant changed. On the old plant, hw_matched
+<strong>survived 6 s</strong> — that result established the plant gap. On the
+P7 plant:</p>
+<div class="table-wrap"><table>
+<tr><th>Condition</th><th>died</th><th>p10</th><th>p25</th><th>p50</th><th>&lt;2.0 s</th><th>pitch drift @0.35 s</th></tr>
+<tr><td>random_phase (sim's own reset)</td><td class="num">512/512</td><td class="num">0.61</td><td class="num">0.85</td><td class="num">2.96</td><td class="num">46.7%</td><td class="num">−0.237, 82% one-signed</td></tr>
+<tr><td>phase0</td><td class="num">512/512</td><td class="num">0.62</td><td class="num">0.92</td><td class="num">2.64</td><td class="num">47.3%</td><td class="num">−0.225, 81%</td></tr>
+<tr><td><strong>hw_matched</strong> (the hardware launch)</td><td class="num"><strong>512/512</strong></td><td class="num">0.64</td><td class="num">0.91</td><td class="num"><strong>1.93</strong></td><td class="num">50.6%</td><td class="num"><strong>−0.238, 83% one-signed</strong></td></tr>
+<tr><td>hw_tilt (pitched start)</td><td class="num">512/512</td><td class="num">0.81</td><td class="num">1.21</td><td class="num">3.59</td><td class="num">39.5%</td><td class="num">−0.058, 68%</td></tr>
+</table></div>
+<p><strong>Reading:</strong> the corrected plant flips hw_matched from
+indefinite balance to <em>universal, pitch-first falls in the hardware's
+direction</em> — the gap has closed from "sim can't fall" to "sim falls the
+right way but slower and with spread" (hardware: deterministic ~0.25 s tip,
+onset 0.161 s; sim p10 0.64 s, median 1.93 s).</p>
+
+<h3>Residual-timing candidates checked same session</h3>
+<ul>
+  <li><strong>Recorded obs contract (−0.089 trim over-correction): does not
+  close it.</strong> Compound run with <code>--pg-bias -0.112</code> (the
+  launch reading the policy actually saw): hw_matched p10 0.59 / p25 0.83 /
+  median 2.99 s, &lt;2 s 47.7% — early quantiles shift ~0.06 s earlier, no
+  collapse toward the hardware cluster. (random_phase does degrade, 2.96 →
+  1.72 s median, so the bias hurts — it's just not the discriminator.)</li>
+  <li><strong>Stale knee REAL_KP=16: never flew — candidate dead.</strong>
+  The fall logs record sim-space kp [6,8,8] per tick, and
+  <code>motor_bridge._sim_to_motor_gains</code> applies the G² transform
+  (kp_m = 8·(22/30)² ≈ 4.3 to the knee motor). The Phase 10 audit item
+  "recompute knee REAL_KP" targets a latent config constant, not the flown
+  contract. Contract clean.</li>
+  <li><strong>Latency (operator hypothesis: &ldquo;maybe the shorter latency
+  now&rdquo;): does not move it.</strong> Gate rerun with all delay taps forced
+  to hardware truth (<code>--action-delay 0,0 --joint-delay 0,0</code>):
+  hw_matched p10 0.63 / p25 0.80 / median 3.03 s — statistically the same
+  distribution as the 1-tick run. The residual is not a delay artifact in
+  either direction.</li>
+  <li><strong>Still open for the residual:</strong> (a) per-env DR draws vs
+  the ONE real plant — the sim's harsh-draw tail (p10–p25: 0.6–0.9 s) is the
+  right comparison against hardware's ~0.25 s, and the real plant may sit at
+  the harsh corner (the knee bench implies a rotor 40% above the hip's — if
+  both RS01s are at 19e-3 the real plant is harsher than the sim central);
+  (b) the commanded-τ scale degeneracy (a weaker-than-commanded real motor
+  falls faster than the replica) — the knee belt-off run arbitrates;
+  (c) lash small-signal / launch transient, still unmodeled.</li>
+</ul>
+<p><strong>Consequence independent of the gate:</strong> the G2i policy cannot
+fly the corrected plant even in its own reset distribution (random_phase: all
+die, median 2.96 s). Whatever the final gate verdict, <em>Phase 9 must be a
+fresh retrain</em> — the old checkpoints are policies for a plant that does
+not exist.</p>
+
+<h2>Tooling shipped today</h2>
+<div class="table-wrap"><table>
+<tr><th>Script</th><th>Does</th></tr>
+<tr><td><code>control/robstride_param_read.py</code></td><td>+SocketCAN transport, +0x7021 filter registers, +guarded RAM write, per-motor host-id fallback</td></tr>
+<tr><td><code>control/vel_decode_check.py</code></td><td>P0 spin test; integral-fit verdict (jitter-immune)</td></tr>
+<tr><td><code>control/action_latency_bench.py</code></td><td>M1.1 τ-step onset; PD-hold baseline, travel guard, detrended quadratic fit</td></tr>
+<tr><td><code>control/imu_enc_skew_log.py</code></td><td>M1.2 arrival-skew logger; also yields the fw velocity-filter lag</td></tr>
+<tr><td><code>control/kd_filter_chirp.py</code> + <code>data/kd_chirp_fit.py</code></td><td>M2.1 FRF ladder + synthetic-validated fit</td></tr>
+<tr><td><code>control/kd_brake_test.py</code></td><td>M2.1 decisive brake-decay discriminator</td></tr>
+<tr><td><code>control/pos_step_test.py</code></td><td>M2.3 kp-only step test</td></tr>
+<tr><td><code>control/ballistic_torque_probe.py</code></td><td>M3.1 torque ceiling from τ bursts vs known inertia — no load rig, self-calibrating</td></tr>
+<tr><td><code>data/step_lag_fit.py</code></td><td>M4.1 single-kp step fit + model-free ring/droop metrics; synthetic-validated</td></tr>
+<tr><td><code>data/kp_sweep_fit.py</code></td><td>M4.1 kp-triplet joint fit, model comparison rigid vs fb-filter vs fb-delay (fractional-delay, differentiable); synthetic-validated</td></tr>
+<tr><td><code>control/friction_breakaway.py</code></td><td>P5 commanded-τ breakaway ramp; gravity cancels by direction symmetry; offline <code>--analyze</code> re-threshold</td></tr>
+<tr><td><code>control/coast_down_bench.py</code></td><td>P5 capture, three modes; <code>ballistic</code> (default) = M3.1 envelope with offset-start reps, stall guard, logged brake</td></tr>
+<tr><td><code>data/coastdown_fit.py</code></td><td>P5 burst-primary fit (I/C/b/gravity) + PD-brake reconstruction; 8 synthetic selftest cases incl. lash + b/g1 degeneracy</td></tr>
+</table></div>
+<p class="subtitle">Raw data: <code>data/*.npz</code> (lat_/skew_/kdchirp_/kdbrake_/step_ + vel_check_), duplicated on the Pi. All scripts synced both ways through <code>origin/main</code>.</p>
+
+<div class="verdict">
+  <span class="v-label">Master gate — status after P8 first pass</span>
+  The gate asked for a replica that tips forward pitch-first in &lt;0.5 s with
+  onset near 0.16 s. The P7 plant delivers the mechanism and the direction:
+  hw_matched went from surviving 6 s to 512/512 pitch-first falls (83%
+  one-signed, hardware's sign), with the missing rotor coupling identified,
+  measured, and peaking at the observed 0.161 s onset in fall-log replay. The
+  timing distribution (p10 0.64 s, median 1.93 s across DR draws) is not yet
+  the hardware's deterministic ~0.25 s cluster; obs-contract bias and the
+  stale-REAL_KP candidates for that residual are eliminated, DR-draw spread
+  and the commanded-τ scale remain. Retrain justification no longer rests on
+  the gate alone: the flying policy cannot balance the measured plant in any
+  launch condition.
+</div>
+
+</main>

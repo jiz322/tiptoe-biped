@@ -1,0 +1,19 @@
+--- a/rsl_rl/algorithms/ppo.py
++++ b/rsl_rl/algorithms/ppo.py
+@@ -279,7 +279,15 @@
+                         if kl_mean > self.desired_kl * 2.0:
+                             self.learning_rate = max(1e-5, self.learning_rate / 1.5)
+                         elif kl_mean < self.desired_kl / 2.0 and kl_mean > 0.0:
+-                            self.learning_rate = min(1e-2, self.learning_rate * 1.5)
++                            # LOCAL PATCH v2 (big_thigh 2026-08-25 eve): ceiling 1e-3.
++                            # History: stock 1e-2 killed K3/K3s2/K4 (late maturity);
++                            # 2e-4 cap (08-23) fixed those but L2 collapsed under it;
++                            # full removal (08-25 am) gave R2 a 95k vloss spike within
++                            # 100 iters. 1e-3 = 5x the old cap's headroom, 10x below
++                            # the fatal stock rides. Pair with desired_kl ~0.02 under
++                            # heavy DR (0.008 band pins lr at the 1e-5 floor 60% of
++                            # updates — R1/R2 TB 08-25).
++                            self.learning_rate = min(1e-3, self.learning_rate * 1.5)
+ 
+                     # Update the learning rate for all GPUs
+                     if self.is_multi_gpu:

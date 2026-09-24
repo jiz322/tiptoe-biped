@@ -1,0 +1,15 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Binary assets
+*.stl binary
+*.usd binary
+*.usda text
+*.pt binary
+*.onnx binary
+*.png binary
+*.3mf binary
+*.step binary
+*.npz binary
+*.sh text eol=lf
+*.patch -text

@@ -1,0 +1,56 @@
+# TipToe public repo
+#
+# Recordings and training outputs stay out of git: hardware recordings are
+# published as Release assets (see data/README.md), training logs are local.
+
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.vscode/
+.idea/
+.DS_Store
+*.tmp
+*.log
+*.bak
+
+# training outputs
+RL/logs/
+RL/outputs/
+outputs/
+logs/
+
+# recordings and analysis dumps (released as zips, not in-tree)
+*.npz
+*.csv
+!control/fw_dumps/*.csv
+*.json
+!assets/**/config.json
+!analysis_motor_filters/*.json
+*.png
+!analysis_motor_filters/*.png
+!reports/**/*.png
+!hardware/img/*.png
+!docs/img/*.png
+*.gif
+!docs/img/*.gif
+*.mp4
+*.pdf
+
+# checkpoints: only the one released policy is tracked
+*.pt
+!control/r1r_3150.pt
+!control/exported/policy.pt
+*.onnx
+
+# CAD lives on MakerWorld / the GitHub Release, never in git
+CAD/
+*.SLDPRT
+*.SLDASM
+*.3mf
+*.step
+*.stp
+
+# Onshape exporter leftovers
+*.part
+.env

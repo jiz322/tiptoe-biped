@@ -1,0 +1,994 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<!-- Onshape https://cad.onshape.com/documents/b6fa6c6551b838ca1aec2562/w/9944cc42184f2fdfd8c41b59/e/0c19493649048a194f04088e -->
+<robot name="tiptoe">
+  <!-- Link torso2hip -->
+  <link name="torso2hip">
+    <inertial>
+      <origin xyz="-0.0107571 2.0172e-05 -0.0291832" rpy="0 0 0"/>
+      <mass value="1.8095"/>
+      <inertia ixx="0.00719576" ixy="-8.076e-09" ixz="-4.86638e-05" iyy="0.00220562" iyz="1.14102e-07" izz="0.00806047"/>
+    </inertial>
+    <!-- Part torso_top_board -->
+    <visual>
+      <origin xyz="0.00360804 2.20098e-05 0" rpy="-3.14159 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/torso_top_board.stl"/>
+      </geometry>
+      <material name="torso_top_board_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00360804 2.20098e-05 0" rpy="-3.14159 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/torso_top_board.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part battery -->
+    <visual>
+      <origin xyz="0.00860804 2.18106e-05 -0.0315" rpy="-1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/battery.stl"/>
+      </geometry>
+      <material name="battery_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00860804 2.18106e-05 -0.0315" rpy="-1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/battery.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor05_simplified -->
+    <visual>
+      <origin xyz="-0.026392 0.0800218 -0.0315" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor05_simplified.stl"/>
+      </geometry>
+      <material name="motor05_simplified_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.026392 0.0800218 -0.0315" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor05_simplified.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part torso2hip -->
+    <visual>
+      <origin xyz="-0.016392 -0.0799782 -0.0315" rpy="-1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/torso2hip.stl"/>
+      </geometry>
+      <material name="torso2hip_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.016392 -0.0799782 -0.0315" rpy="-1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/torso2hip.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor05_simplified_2 -->
+    <visual>
+      <origin xyz="-0.026392 -0.0799782 -0.0315" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor05_simplified.stl"/>
+      </geometry>
+      <material name="motor05_simplified_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.026392 -0.0799782 -0.0315" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor05_simplified.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part battery_2 -->
+    <visual>
+      <origin xyz="0.00860804 2.18106e-05 -0.0315" rpy="1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/battery.stl"/>
+      </geometry>
+      <material name="battery_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00860804 2.18106e-05 -0.0315" rpy="1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/battery.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Frame imu (dummy link + fixed joint) -->
+  <link name="imu">
+    <origin xyz="0 0 0" rpy="0 -0 0"/>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-9"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+  <joint name="imu_frame" type="fixed">
+    <origin xyz="-0 0.04252 -0" rpy="-0 0 0"/>
+    <parent link="torso2hip"/>
+    <child link="imu"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <!-- Link chasis_motor2motor -->
+  <link name="chasis_motor2motor">
+    <inertial>
+      <origin xyz="-0 0 -0.0623004" rpy="0 0 0"/>
+      <mass value="1.1141"/>
+      <inertia ixx="0.00167339" ixy="-0" ixz="-0" iyy="0.0017821" iyz="0" izz="0.00128065"/>
+    </inertial>
+    <!-- Part chasis_side -->
+    <visual>
+      <origin xyz="0.0365 0 -0.071" rpy="0 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side.stl"/>
+      </geometry>
+      <material name="chasis_side_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0365 0 -0.071" rpy="0 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_side_2 -->
+    <visual>
+      <origin xyz="-0.0365 0 -0.071" rpy="-3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side.stl"/>
+      </geometry>
+      <material name="chasis_side_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0365 0 -0.071" rpy="-3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor01_simplified -->
+    <visual>
+      <origin xyz="-0.0415 0 -0.071" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+      <material name="motor01_simplified_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0415 0 -0.071" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part lid_bearing_inner -->
+    <visual>
+      <origin xyz="0 0 0" rpy="-3.14159 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_inner.stl"/>
+      </geometry>
+      <material name="lid_bearing_inner_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="-3.14159 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_inner.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_rotate_00 -->
+    <visual>
+      <origin xyz="0.0085 0 -0.071" rpy="0 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00.stl"/>
+      </geometry>
+      <material name="chasis_rotate_00_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0085 0 -0.071" rpy="0 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part lid_bearing_outer -->
+    <visual>
+      <origin xyz="0 0 -0.003" rpy="0 -0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_outer.stl"/>
+      </geometry>
+      <material name="lid_bearing_outer_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.003" rpy="0 -0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_outer.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_motor2motor -->
+    <visual>
+      <origin xyz="-0 0 -0.071" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_motor2motor.stl"/>
+      </geometry>
+      <material name="chasis_motor2motor_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 -0.071" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_motor2motor.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part el05_flang -->
+    <visual>
+      <origin xyz="0 0 -0.013" rpy="0 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/el05_flang.stl"/>
+      </geometry>
+      <material name="el05_flang_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.013" rpy="0 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/el05_flang.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_rotate_00_2 -->
+    <visual>
+      <origin xyz="-0.0085 0 -0.071" rpy="-3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00.stl"/>
+      </geometry>
+      <material name="chasis_rotate_00_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0085 0 -0.071" rpy="-3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor01_simplified_2 -->
+    <visual>
+      <origin xyz="0.0015 0 -0.071" rpy="0 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+      <material name="motor01_simplified_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0015 0 -0.071" rpy="0 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link thigh_outer -->
+  <link name="thigh_outer">
+    <inertial>
+      <origin xyz="-0.0205482 -0.115727 0.0636491" rpy="0 0 0"/>
+      <mass value="0.481"/>
+      <inertia ixx="0.00327073" ixy="-0.000569237" ixz="0.000141199" iyy="0.00152273" iyz="0.000141212" izz="0.00257783"/>
+    </inertial>
+    <!-- Part knee_steel -->
+    <visual>
+      <origin xyz="-0.0556311 -0.17931 0.135" rpy="-3.14159 0 0.662781"/>
+      <geometry>
+        <mesh filename="meshes/knee_steel.stl"/>
+      </geometry>
+      <material name="knee_steel_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0556311 -0.17931 0.135" rpy="-3.14159 0 0.662781"/>
+      <geometry>
+        <mesh filename="meshes/knee_steel.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_inner -->
+    <visual>
+      <origin xyz="-0 0 0.0974" rpy="-0 0 -1.41594"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_inner_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 0.0974" rpy="-0 0 -1.41594"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part stand_steel_00 -->
+    <visual>
+      <origin xyz="-0.0592463 -0.172173 0.0602" rpy="-3.14159 -0 2.23358"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00.stl"/>
+      </geometry>
+      <material name="stand_steel_00_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0592463 -0.172173 0.0602" rpy="-3.14159 -0 2.23358"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part thigh_inner -->
+    <visual>
+      <origin xyz="-0.0574387 -0.175742 0.1084" rpy="0 0 0.154856"/>
+      <geometry>
+        <mesh filename="meshes/thigh_inner.stl"/>
+      </geometry>
+      <material name="thigh_inner_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0574387 -0.175742 0.1084" rpy="0 0 0.154856"/>
+      <geometry>
+        <mesh filename="meshes/thigh_inner.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_outer -->
+    <visual>
+      <origin xyz="-0 0 0.1014" rpy="-0 -0 -2.98674"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_outer.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_outer_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 0.1014" rpy="-0 -0 -2.98674"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_outer.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part stand_steel_00_2 -->
+    <visual>
+      <origin xyz="-0.0592463 -0.172173 0.0969" rpy="0 -0 1.72565"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00.stl"/>
+      </geometry>
+      <material name="stand_steel_00_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0592463 -0.172173 0.0969" rpy="0 -0 1.72565"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part thigh_outer -->
+    <visual>
+      <origin xyz="0 0 -0" rpy="0 0 0.662781"/>
+      <geometry>
+        <mesh filename="meshes/thigh_outer.stl"/>
+      </geometry>
+      <material name="thigh_outer_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0" rpy="0 0 0.662781"/>
+      <geometry>
+        <mesh filename="meshes/thigh_outer.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part simplified_pulley22 -->
+    <visual>
+      <origin xyz="-0 0 0.0809" rpy="0 0 0.154856"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley22.stl"/>
+      </geometry>
+      <material name="simplified_pulley22_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 0.0809" rpy="0 0 0.154856"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley22.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_inner2 -->
+    <visual>
+      <origin xyz="-0 0 0.1034" rpy="-0 -0 -2.98674"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner2.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_inner2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 0.1034" rpy="-0 -0 -2.98674"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner2.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link shin_inner -->
+  <link name="shin_inner">
+    <inertial>
+      <origin xyz="-0.0769655 0.0112026 -0.018292" rpy="0 0 0"/>
+      <mass value="0.3104"/>
+      <inertia ixx="0.000155341" ixy="0.000255718" ixz="6.35075e-07" iyy="0.00185612" iyz="2.58517e-07" izz="0.00186312"/>
+    </inertial>
+    <!-- Part nail -->
+    <visual>
+      <origin xyz="-0.138448 0.0216628 -0.01835" rpy="1.5708 0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/nail.stl"/>
+      </geometry>
+      <material name="nail_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.138448 0.0216628 -0.01835" rpy="1.5708 0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/nail.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part shin_outer -->
+    <visual>
+      <origin xyz="0 -0 0" rpy="0 -0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/shin_outer.stl"/>
+      </geometry>
+      <material name="shin_outer_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0" rpy="0 -0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/shin_outer.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part simplified_pulley30 -->
+    <visual>
+      <origin xyz="0 -0 0" rpy="-3.14159 -0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley30.stl"/>
+      </geometry>
+      <material name="simplified_pulley30_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0" rpy="-3.14159 -0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley30.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part part_3 -->
+    <visual>
+      <origin xyz="-0.175439 0.0375584 -0.03835" rpy="0 -0 -0.154856"/>
+      <geometry>
+        <mesh filename="meshes/part_3.stl"/>
+      </geometry>
+      <material name="part_3_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.175439 0.0375584 -0.03835" rpy="0 -0 -0.154856"/>
+      <geometry>
+        <mesh filename="meshes/part_3.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part shin_inner -->
+    <visual>
+      <origin xyz="0 0 -0.0467" rpy="0 0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/shin_inner.stl"/>
+      </geometry>
+      <material name="shin_inner_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0467" rpy="0 0 -1.72565"/>
+      <geometry>
+        <mesh filename="meshes/shin_inner.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from thigh_outer to shin_inner -->
+  <joint name="knee1" type="revolute">
+    <origin xyz="-0.0592463 -0.172173 0.0969" rpy="0 -0 1.72565"/>
+    <parent link="thigh_outer"/>
+    <child link="shin_inner"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="23.2" velocity="24" lower="-3.141592653589793" upper="3.141592653589793"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+  <!-- Joint from chasis_motor2motor to thigh_outer -->
+  <joint name="hip_pitch1" type="revolute">
+    <origin xyz="-0.0415 0 -0.071" rpy="0 1.5708 0"/>
+    <parent link="chasis_motor2motor"/>
+    <child link="thigh_outer"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="17" velocity="33" lower="-6.28" upper="6.28"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+  <!-- Joint from torso2hip to chasis_motor2motor -->
+  <joint name="hip_roll1" type="revolute">
+    <origin xyz="-0.070392 0.0800218 -0.0315" rpy="1.5708 -0 1.5708"/>
+    <parent link="torso2hip"/>
+    <child link="chasis_motor2motor"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="6" velocity="45" lower="-3.141592653589793" upper="3.141592653589793"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+  <!-- Link lid_bearing_outer___boss_extrude3 -->
+  <link name="lid_bearing_outer___boss_extrude3">
+    <inertial>
+      <origin xyz="-0 -0 -0.0623004" rpy="0 0 0"/>
+      <mass value="1.1141"/>
+      <inertia ixx="0.0017821" ixy="-0" ixz="-0" iyy="0.00167339" iyz="0" izz="0.00128065"/>
+    </inertial>
+    <!-- Part chasis_motor2motor___mirror1 -->
+    <visual>
+      <origin xyz="-0 -0 -0.071" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_motor2motor___mirror1.stl"/>
+      </geometry>
+      <material name="chasis_motor2motor___mirror1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 -0 -0.071" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_motor2motor___mirror1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_side___boss_extrude1 -->
+    <visual>
+      <origin xyz="-0 0.0365 -0.071" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side___boss_extrude1.stl"/>
+      </geometry>
+      <material name="chasis_side___boss_extrude1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0.0365 -0.071" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side___boss_extrude1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part el05_flang___fillet3 -->
+    <visual>
+      <origin xyz="-0 0 -0.013" rpy="-3.14159 -0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/el05_flang___fillet3.stl"/>
+      </geometry>
+      <material name="el05_flang___fillet3_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 -0.013" rpy="-3.14159 -0 1.5708"/>
+      <geometry>
+        <mesh filename="meshes/el05_flang___fillet3.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_rotate_00___fillet1 -->
+    <visual>
+      <origin xyz="-0 -0.0085 -0.071" rpy="-1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00___fillet1.stl"/>
+      </geometry>
+      <material name="chasis_rotate_00___fillet1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 -0.0085 -0.071" rpy="-1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00___fillet1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_rotate_00___fillet1_2 -->
+    <visual>
+      <origin xyz="-0 0.0085 -0.071" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00___fillet1.stl"/>
+      </geometry>
+      <material name="chasis_rotate_00___fillet1_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0.0085 -0.071" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_rotate_00___fillet1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part lid_bearing_outer___boss_extrude3 -->
+    <visual>
+      <origin xyz="0 0 -0.003" rpy="3.14159 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_outer___boss_extrude3.stl"/>
+      </geometry>
+      <material name="lid_bearing_outer___boss_extrude3_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.003" rpy="3.14159 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_outer___boss_extrude3.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor01_simplified_3 -->
+    <visual>
+      <origin xyz="0 0.0015 -0.071" rpy="-3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+      <material name="motor01_simplified_3_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.0015 -0.071" rpy="-3.14159 0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part motor01_simplified_4 -->
+    <visual>
+      <origin xyz="-0 -0.0415 -0.071" rpy="-0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+      <material name="motor01_simplified_4_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 -0.0415 -0.071" rpy="-0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/motor01_simplified.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part chasis_side___boss_extrude1_2 -->
+    <visual>
+      <origin xyz="-0 -0.0365 -0.071" rpy="-1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side___boss_extrude1.stl"/>
+      </geometry>
+      <material name="chasis_side___boss_extrude1_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 -0.0365 -0.071" rpy="-1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/chasis_side___boss_extrude1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part lid_bearing_inner___boss_extrude3 -->
+    <visual>
+      <origin xyz="0 0 -0" rpy="-0 -0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_inner___boss_extrude3.stl"/>
+      </geometry>
+      <material name="lid_bearing_inner___boss_extrude3_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0" rpy="-0 -0 3.14159"/>
+      <geometry>
+        <mesh filename="meshes/lid_bearing_inner___boss_extrude3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link stand_steel_00___fillet1 -->
+  <link name="stand_steel_00___fillet1">
+    <inertial>
+      <origin xyz="-0.0874124 0.0786146 0.0636492" rpy="0 0 0"/>
+      <mass value="0.481"/>
+      <inertia ixx="0.00205748" ixy="0.000987162" ixz="0.000198232" iyy="0.00273714" iyz="-2.46607e-05" izz="0.00257901"/>
+    </inertial>
+    <!-- Part stand_steel_00___fillet1 -->
+    <visual>
+      <origin xyz="-0.154185 0.107117 0.0602" rpy="0 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00___fillet1.stl"/>
+      </geometry>
+      <material name="stand_steel_00___fillet1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.154185 0.107117 0.0602" rpy="0 0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00___fillet1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part knee_steel___boss_extrude1 -->
+    <visual>
+      <origin xyz="-0.154185 0.107117 0.135" rpy="0 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/knee_steel___boss_extrude1.stl"/>
+      </geometry>
+      <material name="knee_steel___boss_extrude1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.154185 0.107117 0.135" rpy="0 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/knee_steel___boss_extrude1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part stand_steel_00___fillet1_2 -->
+    <visual>
+      <origin xyz="-0.154185 0.107117 0.0969" rpy="3.14159 0 -1.06287"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00___fillet1.stl"/>
+      </geometry>
+      <material name="stand_steel_00___fillet1_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.154185 0.107117 0.0969" rpy="3.14159 0 -1.06287"/>
+      <geometry>
+        <mesh filename="meshes/stand_steel_00___fillet1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_inner2___boss_extrude2 -->
+    <visual>
+      <origin xyz="0 -0 0.1034" rpy="-3.14159 0 -2.63367"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner2___boss_extrude2.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_inner2___boss_extrude2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0.1034" rpy="-3.14159 0 -2.63367"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner2___boss_extrude2.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part thigh_outer___cut_extrude4 -->
+    <visual>
+      <origin xyz="-0 0 -0" rpy="3.14159 0 0"/>
+      <geometry>
+        <mesh filename="meshes/thigh_outer___cut_extrude4.stl"/>
+      </geometry>
+      <material name="thigh_outer___cut_extrude4_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 0 -0" rpy="3.14159 0 0"/>
+      <geometry>
+        <mesh filename="meshes/thigh_outer___cut_extrude4.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part simplified_pulley22_2 -->
+    <visual>
+      <origin xyz="0 -0 0.0974" rpy="3.14159 -0 0.507926"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley22.stl"/>
+      </geometry>
+      <material name="simplified_pulley22_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0.0974" rpy="3.14159 -0 0.507926"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley22.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_inner___m4_clearance_hole1 -->
+    <visual>
+      <origin xyz="0 -0 0.0974" rpy="3.14159 0 2.07872"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner___m4_clearance_hole1.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_inner___m4_clearance_hole1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0.0974" rpy="3.14159 0 2.07872"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_inner___m4_clearance_hole1.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part thigh_inner___fillet4 -->
+    <visual>
+      <origin xyz="-0.153414 0.103192 0.1084" rpy="-3.14159 0 0.507926"/>
+      <geometry>
+        <mesh filename="meshes/thigh_inner___fillet4.stl"/>
+      </geometry>
+      <material name="thigh_inner___fillet4_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.153414 0.103192 0.1084" rpy="-3.14159 0 0.507926"/>
+      <geometry>
+        <mesh filename="meshes/thigh_inner___fillet4.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part v2_thighlid_passive_outer___boss_extrude3 -->
+    <visual>
+      <origin xyz="0 -0 0.1014" rpy="3.14159 0 2.07872"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_outer___boss_extrude3.stl"/>
+      </geometry>
+      <material name="v2_thighlid_passive_outer___boss_extrude3_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0.1014" rpy="3.14159 0 2.07872"/>
+      <geometry>
+        <mesh filename="meshes/v2_thighlid_passive_outer___boss_extrude3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link nail___fillet1 -->
+  <link name="nail___fillet1">
+    <inertial>
+      <origin xyz="0.000802418 0.0777828 0.018408" rpy="0 0 0"/>
+      <mass value="0.3104"/>
+      <inertia ixx="0.00189435" ixy="-1.5637e-05" ixz="-3.53345e-07" iyy="0.000117862" iyz="-5.86896e-07" izz="0.00186387"/>
+    </inertial>
+    <!-- Part simplified_pulley30_2 -->
+    <visual>
+      <origin xyz="0 0 0" rpy="-0 -0 0"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley30.stl"/>
+      </geometry>
+      <material name="simplified_pulley30_2_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="-0 -0 0"/>
+      <geometry>
+        <mesh filename="meshes/simplified_pulley30.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part shin_inner___fillet12 -->
+    <visual>
+      <origin xyz="0 -0 -0.01" rpy="3.14159 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/shin_inner___fillet12.stl"/>
+      </geometry>
+      <material name="shin_inner___fillet12_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 -0.01" rpy="3.14159 -0 -0"/>
+      <geometry>
+        <mesh filename="meshes/shin_inner___fillet12.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part shin_outer___fillet13 -->
+    <visual>
+      <origin xyz="0 0 0.0367" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="meshes/shin_outer___fillet13.stl"/>
+      </geometry>
+      <material name="shin_outer___fillet13_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0367" rpy="3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="meshes/shin_outer___fillet13.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part part_3_2 -->
+    <visual>
+      <origin xyz="-0.0100495 0.179191 0.03835" rpy="-3.14159 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/part_3.stl"/>
+      </geometry>
+      <material name="part_3_2_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0100495 0.179191 0.03835" rpy="-3.14159 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="meshes/part_3.stl"/>
+      </geometry>
+    </collision>
+    <!-- Part nail___fillet1 -->
+    <visual>
+      <origin xyz="-4.95155e-05 0.140191 0.01835" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/nail___fillet1.stl"/>
+      </geometry>
+      <material name="nail___fillet1_material">
+        <color rgba="0.796078 0.823529 0.937255 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-4.95155e-05 0.140191 0.01835" rpy="1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="meshes/nail___fillet1.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from stand_steel_00___fillet1 to nail___fillet1 -->
+  <joint name="knee2" type="revolute">
+    <origin xyz="-0.154185 0.107117 0.0602" rpy="0 0 0.662781"/>
+    <parent link="stand_steel_00___fillet1"/>
+    <child link="nail___fillet1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="23.2" velocity="24" lower="-3.141592653589793" upper="3.141592653589793"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+  <!-- Joint from lid_bearing_outer___boss_extrude3 to stand_steel_00___fillet1 -->
+  <joint name="hip_pitch2" type="revolute">
+    <origin xyz="-0 -0.0415 -0.071" rpy="-1.5708 0.908015 0"/>
+    <parent link="lid_bearing_outer___boss_extrude3"/>
+    <child link="stand_steel_00___fillet1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="17" velocity="33" lower="-6.28" upper="6.28"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+  <!-- Joint from torso2hip to lid_bearing_outer___boss_extrude3 -->
+  <joint name="hip_roll2" type="revolute">
+    <origin xyz="-0.070392 -0.0799782 -0.0315" rpy="-3.14159 -1.5708 0"/>
+    <parent link="torso2hip"/>
+    <child link="lid_bearing_outer___boss_extrude3"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="6" velocity="45" lower="-3.141592653589793" upper="3.141592653589793"/>
+    <joint_properties friction="0.05"/>
+  </joint>
+</robot>
