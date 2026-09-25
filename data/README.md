@@ -3,7 +3,7 @@
 Every flight and bench session of the campaign was recorded by
 `control/balance_log.py` at 100 Hz into one `.npz` per trial. The recordings
 are **not in git**. They are published as one zip per session folder on the
-GitHub Release page (`tiptoe-dataset-<folder>.zip`), licensed CC BY 4.0. Unzip
+[GitHub Release page](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0) (`tiptoe-dataset-<folder>.zip`), licensed CC BY 4.0. Unzip
 them into this folder to make the paths in the docs and analysis scripts
 resolve.
 
@@ -26,7 +26,7 @@ the lateral sign set was mirrored until the 08-28 fix (retrospective #12).
 | `p12_3_flight_20260831_v` | 08-31 | R1r_3150 | 6 | −0.089 | v | fixed | Blind handover A/B: time to 25° tilt 0.34 → 0.67 s. Predictions in `docs/PREDICTIONS_p12_3.md`. |
 | `p12_4_flight_20260903_v_notrim` | 09-03 | R1r_3150 | 6 | 0 | v | fixed | Trim bracket, middle arm. 6/6 backward. |
 | `p12_4_flight_20260903_v_postrim` | 09-03 | R1r_3150 | 1 | +0.089 | v | fixed | **The 6.06 s stand.** Still upright at log stop. |
-| `r1r_flight_20260906` | 09-06 | R1r_3150 | 3 | +0.089 | v | fixed | Companion trials to the S4 test. |
+| `r1r_flight_20260906` | 09-06 | R1r_3150 | 3 | +0.089 | v | fixed | Same configuration as the 09-03 stand. 1.67 s fall; **5.23 s and 8.79 s still upright at log stop** (the 8.79 s trial drifted into an obstacle). Companion trials to the S4 test. |
 | `s4_flight_20260910` | 09-10 | S4a_6520, S4b_6520, R1r_3150 | 11 | +0.089 / 0 (per file) | v | fixed | S-line checkpoints vs R1r; three tooth skips logged. README.txt in folder; `sysid_targets.json` alongside. |
 
 The last-listed trial in the 08-27, 08-28 and 08-31 sessions started with the

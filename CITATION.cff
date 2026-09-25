@@ -17,7 +17,7 @@ keywords:
   - open hardware
   - RobStride
 abstract: >
-  A 6-DOF point-foot biped built for about 5500 CNY from four RobStride RS01,
+  A 6-DOF point-foot biped built for about 5700 CNY from four RobStride RS01,
   two EL05, a Raspberry Pi 5 and printed parts, with a belt-driven knee. Trained
   with PPO in Isaac Lab and deployed through a Python CAN stack. The repository
   contains the hardware files, the training environment, the deploy stack, the

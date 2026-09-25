@@ -7,3 +7,12 @@ Contract: config as of 2026-09-06 = the 09-03 standing configuration:
 - Handover 'v' (blind, training contract).
 - IMU signs corrected (2026-08-28 set).
 Trial start condition: on the ground.
+
+Outcomes (from the npz, tilt = angle of body z from vertical; owner's notes):
+  r1r_3150_log_20260906_155236.npz  1.67 s  fell (tilt > 25 deg at 1.30 s, never recovered)
+  r1r_3150_log_20260906_155253.npz  5.23 s  upright at log stop (final tilt 12 deg)
+  r1r_3150_log_20260906_155309.npz  8.79 s  upright at log stop (final tilt 20 deg); the
+                                            robot shuffled into an obstacle, which is why
+                                            the trial ended. Longest hardware balance to date.
+Both surviving trials crossed 25 deg transiently (36 and 39 deg peaks) and
+caught themselves by stepping, as the 09-03 trial did (34 deg excursion).

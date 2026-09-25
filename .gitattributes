@@ -8,6 +8,7 @@
 *.pt binary
 *.onnx binary
 *.png binary
+*.gif binary
 *.3mf binary
 *.step binary
 *.npz binary

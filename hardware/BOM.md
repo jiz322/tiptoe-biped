@@ -20,28 +20,29 @@ v2.7 CAD file list.
 | 6 | MCP2518FD SPI CAN module | 1 | 40 | 40 | CAN FD chip run as classic CAN 2.0 at 1 Mbps over SocketCAN. Wiring, crystal check (20 vs 40 MHz) and OS setup in `control/CAN2SPI_BRINGUP.md`. |
 | 7 | 4S 6500 mAh semi-solid LiPo | 2 | 381 | 762 | Bus voltage for all six motors. Two packs: one flies, one charges (**confirm**: if only one is on the robot at a time, the build cost is ¥381 lower). |
 | 8 | Matek PDB-HEX | 1 | 98 | 98 | Power distribution; its BEC feeds the Pi and IMU 5 V rail (**confirm** which output). |
-| 9 | 3D-print filament | — | — | <100 | Whole robot prints from `all.3mf` (v2.7). Material, grams and print time: **TBD**. |
-| 10 | Screws, nuts, heat-set inserts | — | — | <100 | Sizes: **TBD** (M3/M4 per CAD hole callouts). |
-| | **Subtotal (priced)** | | | **≈ 5360** | Upper bound; lines 9–10 rounded up to 100 each. |
+| 9 | RA5008 crossed-roller bearing (hip roll) | 2 | 140 | 280 | One per hip roll joint; carries the leg load so the EL05 hip roll motor is not loaded radially. |
+| 10 | HTD 5M timing belt | 2 | 30 | 60 | One per knee, motor in the hip body → knee. Length / width: read from the v2.7 assembly. |
+| 11 | 3D-print filament | — | — | <100 | Whole robot prints from `all.3mf` (v2.7). Material, grams and print time: **TBD**. |
+| 12 | Screws, nuts, heat-set inserts | — | — | <100 | Sizes: **TBD** (M3/M4 per CAD hole callouts). |
+| | **Subtotal (priced)** | | | **≈ 5700** | Upper bound; lines 11–12 rounded up to 100 each. ¥5501 before them. |
 
 ## Unpriced lines — TBD
 
 | # | Item | Qty | Notes |
 |---|---|---|---|
-| 11 | ELRS receiver | 1 | CRSF on `/dev/ttyAMA2` at 420000 baud (`control/crsf_reader.py`). Arms the loop via `main.py`. Transmitter is not counted as robot cost. |
-| 12 | HTD 5M timing belt | 2 | One per knee, motor in the hip body → knee. Length / width: read from the v2.7 assembly. |
-| 13 | Pulleys 22T and 30T, HTD 5M | 2 + 2 | `pulley_5m_22*.STL` and `pulley_5m_30.STL` exist in CAD, so they may be printed rather than bought. **Confirm** which was used on the flying robot (the observed tooth skip is a load-gated belt/pulley effect). |
-| 14 | Bearings | ? | `bearing_big`, `lid_bearing_inner`, `lid_bearing_outer` in CAD. Sizes: **TBD**. |
-| 15 | Steel parts | 2 sets | `knee_steel`, `stand_steel_00_*` (several revisions; note which is current), `nail` (foot pin). Laser-cut or turned. STEP/drawing per part goes on the release. |
-| 16 | Ball feet | 2 | 20 mm ball on the nail. Material: **TBD**. |
-| 17 | Wiring | — | XT30/XT60 leads, CAN bus twisted pair with 120 Ω terminations, motor power leads, Pi USB-C. |
+| 13 | ELRS receiver | 1 | CRSF on `/dev/ttyAMA2` at 420000 baud (`control/crsf_reader.py`). Arms the loop via `main.py`. Transmitter is not counted as robot cost. |
+| 14 | Pulleys 22T and 30T, HTD 5M | 2 + 2 | `pulley_5m_22*.STL` and `pulley_5m_30.STL` exist in CAD, so they may be printed rather than bought. **Confirm** which was used on the flying robot (the observed tooth skip is a load-gated belt/pulley effect). |
+| 15 | Other bearings | ? | `bearing_big`, `lid_bearing_inner`, `lid_bearing_outer` in CAD. Sizes: **TBD**. |
+| 16 | Steel parts | 2 sets | `knee_steel`, `stand_steel_00_*` (several revisions; note which is current), `nail` (foot pin). Laser-cut or turned. STEP/drawing per part goes on the release. |
+| 17 | Ball feet | 2 | 20 mm ball on the nail. Material: **TBD**. |
+| 18 | Wiring | — | XT30/XT60 leads, CAN bus twisted pair with 120 Ω terminations, motor power leads, Pi USB-C. |
 
 ## Total
 
-Priced lines come to about ¥5360. The unpriced lines are unlikely to exceed a
-few hundred yuan, so the build lands at or just under the ¥5500 figure the
-project quotes. Update this file when the TBD lines are filled and remove
-this paragraph.
+Priced lines come to about ¥5700 (¥5320 if only one battery pack is
+counted). The unpriced lines are small, so the build lands near the ¥5700
+figure the project quotes. Update this file when the TBD lines are filled and
+remove this paragraph.
 
 ## Also to record before release
 

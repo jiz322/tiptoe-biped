@@ -1,11 +1,17 @@
 # TipToe
 
-**A ¥5500 point-foot biped, trained with PPO in Isaac Lab, built by one
-person working with an AI coding agent. It stood for 6 seconds. Here is
-everything, including what went wrong.**
+**A ¥5700 point-foot biped, trained with PPO in Isaac Lab, built by one
+person working with an AI coding agent. It stands and catch-steps on
+hardware; the longest recordings, 6 and 9 seconds, ended with the robot still
+upright. Here is everything, including what went wrong.**
 
-<!-- TODO(owner): GIF of the 2026-09-03 stand here, and the seiza photo -->
-<!-- ![6.06 s free-standing balance, 2026-09-03](docs/img/stand-20260903.gif) -->
+![TipToe balancing on hardware with the released policy](docs/img/demo.gif)
+
+| Hardware: catch-stepping in place (the "shuffle") | Sim: the released policy balancing in Isaac Lab |
+|---|---|
+| ![Hardware shuffle](docs/img/shuffling.gif) | ![Sim balance](docs/img/sim_shuffling.gif) |
+| **Sim: stepping** | **Sim: kneel (seiza) to stand curriculum, not yet flown on hardware** |
+| ![Sim stepping](docs/img/sim_stepping.gif) | ![Sim seiza to stand](docs/img/sim_seiza2standup.gif) |
 
 Video: *to be added* (Bilibili / YouTube).
 
@@ -18,18 +24,23 @@ millimetre of centre-of-mass error, degree of IMU bias, or unmodelled
 newton-metre in the knee shows up as a fall within a second.
 
 This repository is **open hardware plus an open sim2real research log**. It is
-not a platform, and it does not claim to be one: the robot has stood once, for
-6.06 s, still upright when the log stopped. What it offers is the complete
-record of getting there, from empty repo (2026-03-28) to first stand
-(2026-09-03): the plant model, the fifteen fixes without which it would not
-stand, the pre-registered predictions that were right and the hypotheses that
-were wrong, and an open problem for you to attack.
+not a platform, and it does not claim to be one: the robot balances at one
+configuration, in a handful of trials, and not yet reliably. The two longest
+recordings (6.06 s on 09-03, 8.79 s on 09-06) did not end in a fall: the first
+was stopped by the operator after a belt tooth skipped, with the robot still
+upright; the second drifted into an obstacle while still stepping. How much
+longer it would have balanced on a clear floor with an intact belt is not
+known. What it offers is the complete record of getting there, from empty repo
+(2026-03-28) to first stand (2026-09-03): the plant model, the fifteen fixes
+without which it would not stand, the pre-registered predictions that were
+right and the hypotheses that were wrong, and an open problem for you to
+attack.
 
 ## Status
 
 | Works | Does not work yet |
 |---|---|
-| Stands from a ground start and balances in place for 6 s with the released policy and the +0.089 pitch trim (n = 1 at that configuration; 5/5 and 6/6 falls at the two other trim values the same day). | Reliable standing. Before 09-03 the best trial was 0.67 s to a 25° tilt. |
+| Stands from a ground start and balances in place, catch-stepping, with the released policy and the +0.089 pitch trim. Five trials at that configuration: 6.06 s (09-03, operator stop after a belt tooth skip, still upright), 8.79 s and 5.23 s (09-06, both upright at log stop; the 8.79 s trial drifted into an obstacle), one fall at 1.3 s (09-06), one fall at 3.3 s after a tooth skip (09-10). 5/5 and 6/6 falls at the two other trim values on 09-03. | Reliable standing. Before 09-03 the best trial was 0.67 s to a 25° tilt. |
 | Full training pipeline in Isaac Lab: belt-knee actuator model, measured plant DR, kneel-to-stand curriculum along a seiza → crouch → squat path. | Stand-up from seiza on hardware (trained in sim, not yet flown). |
 | Deploy stack: RobStride MIT-mode driver over SocketCAN (MCP2518FD), 400 Hz IMU, ELRS, rsl_rl loader with the observation normaliser, logging to npz. | Walking. The v1 sim policy walked in April; nothing has walked on hardware. |
 | Bench identification: rotor inertia, friction, belt coupling and elasticity, firmware PD replica, CAN timing. | Belt reliability: the right knee skips a tooth under catch-step loads. |
@@ -65,10 +76,11 @@ lessons that follow it are the reason this repo is public.
 ## Build it
 
 - Bill of materials with the prices actually paid: [hardware/BOM.md](hardware/BOM.md).
-  Priced lines total about ¥5360 (motors ¥2994, Pi + SD ¥1013, IMU ¥254,
-  CAN board ¥40, two 4S packs ¥762, PDB ¥98, print and screws under ¥200).
-- Print files: MakerWorld listing (*link at launch*). STEP export of the v2.7
-  assembly: GitHub Release v0.1.0 (*link at launch*).
+  Priced lines total about ¥5700 (motors ¥2994, Pi + SD ¥1013, IMU ¥254,
+  CAN board ¥40, two 4S packs ¥762, PDB ¥98, hip roll bearings ¥280, belts ¥60,
+  print and screws under ¥200).
+- Print files: MakerWorld listing (*link to be added*). STEP export of the v2.7
+  assembly: [GitHub Release v0.1.0](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0).
 - Assembly notes, wiring, IMU mounting, motor zeroing: [hardware/ASSEMBLY.md](hardware/ASSEMBLY.md).
 - CAN bring-up on the Pi: [control/CAN2SPI_BRINGUP.md](control/CAN2SPI_BRINGUP.md).
 
@@ -130,8 +142,9 @@ The docs are the product. In reading order:
 
 Every flight session, one npz per trial at 100 Hz: observations, actions,
 targets, joint state, motor torques and temperatures, IMU, loop timing. Nine
-sessions, 69 trials, 2026-08-24 to 09-10, including the 6.06 s stand.
-Released as zips on the v0.1.0 Release page under CC BY 4.0; the schema, the
+sessions, 69 trials, 2026-08-24 to 09-10, including the 6.06 s and 8.79 s
+stands.
+Released as zips on the [v0.1.0 Release page](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0) under CC BY 4.0; the schema, the
 per-session contracts (trim, handover, IMU sign state) and a loader snippet
 are in [data/README.md](data/README.md).
 

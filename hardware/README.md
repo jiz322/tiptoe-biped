@@ -8,7 +8,7 @@ about 50 cm tall. Version on the flying robot: **v2.7**.
 
 | File | What |
 |---|---|
-| [BOM.md](BOM.md) | Bill of materials with the prices actually paid (CNY, 2026-09). Priced lines total about ¥5360. |
+| [BOM.md](BOM.md) | Bill of materials with the prices actually paid (CNY, 2026-09). Priced lines total about ¥5700. |
 | [ASSEMBLY.md](ASSEMBLY.md) | Build notes: print, belt, feet, wiring, IMU, zeroing. |
 | `control/CAN2SPI_BRINGUP.md` | MCP2518FD wiring, crystal check, Raspberry Pi OS overlay and `can0` bring-up. |
 | `assets/tiptoe_v27/` | URDF with meshes (Onshape export, mass-corrected 2026-09-18) and the Isaac Sim USD built from it. |
@@ -18,9 +18,9 @@ about 50 cm tall. Version on the flying robot: **v2.7**.
 CAD is not in git (440 MB across revisions).
 
 - **MakerWorld** (print files): `all.3mf` with print profiles for the whole
-  robot, plus per-part STL. Link: *to be added at launch*.
-- **GitHub Release v0.1.0**: STEP export of the v2.7 assembly and per-part
-  STEP, for people who do not use SolidWorks. Link: *to be added at launch*.
+  robot, plus per-part STL. Link: *to be added*.
+- **[GitHub Release v0.1.0](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0)**: STEP export of the v2.7 assembly and
+  per-part STEP, for people who do not use SolidWorks.
 - Native SolidWorks parts (103 SLDPRT, 4 SLDASM) are available on request.
 
 ## Licence
