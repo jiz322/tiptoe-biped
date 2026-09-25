@@ -13,7 +13,7 @@ upright. Here is everything, including what went wrong.**
 | **Sim: stepping** | **Sim: kneel (seiza) to stand curriculum, not yet flown on hardware** |
 | ![Sim stepping](docs/img/sim_stepping.gif) | ![Sim seiza to stand](docs/img/sim_seiza2standup.gif) |
 
-Video: *to be added* (Bilibili / YouTube).
+Video: [Bilibili BV1SAh16dEAf](https://www.bilibili.com/video/BV1SAh16dEAf).
 
 TipToe is a 6-DOF biped with no ankles: hip roll, hip pitch and knee per leg,
 four RobStride RS01 and two EL05 quasi-direct-drive actuators, a Raspberry Pi 5
@@ -79,10 +79,13 @@ lessons that follow it are the reason this repo is public.
   Priced lines total about ¥5700 (motors ¥2994, Pi + SD ¥1013, IMU ¥254,
   CAN board ¥40, two 4S packs ¥762, PDB ¥98, hip roll bearings ¥280, belts ¥60,
   print and screws under ¥200).
-- Print files: MakerWorld listing (*link to be added*). STEP export of the v2.7
+- Print files: [MakerWorld listing](https://makerworld.com.cn/zh/models/3016996-shuang-zu-ji-qi-ren-tiptoe-y-5700-zi-ping-heng-dia)
+  (24 plates, Bambu profiles plus per-part STL). STEP export of the v2.7
   assembly: [GitHub Release v0.1.0](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0).
 - Assembly notes, wiring, IMU mounting, motor zeroing: [hardware/ASSEMBLY.md](hardware/ASSEMBLY.md).
 - CAN bring-up on the Pi: [control/CAN2SPI_BRINGUP.md](control/CAN2SPI_BRINGUP.md).
+
+![Plate layout: all 24 printed parts on the build plate](docs/img/plate_layout.png)
 
 ## Run it
 

@@ -17,8 +17,9 @@ about 50 cm tall. Version on the flying robot: **v2.7**.
 
 CAD is not in git (440 MB across revisions).
 
-- **MakerWorld** (print files): `all.3mf` with print profiles for the whole
-  robot, plus per-part STL. Link: *to be added*.
+- **[MakerWorld](https://makerworld.com.cn/zh/models/3016996-shuang-zu-ji-qi-ren-tiptoe-y-5700-zi-ping-heng-dia)**
+  (print files): `all.3mf` with print profiles for the whole robot, plus
+  per-part STL, 24 plates.
 - **[GitHub Release v0.1.0](https://github.com/jiz322/tiptoe-biped/releases/tag/v0.1.0)**: STEP export of the v2.7 assembly and
   per-part STEP, for people who do not use SolidWorks.
 - Native SolidWorks parts (103 SLDPRT, 4 SLDASM) are available on request.
