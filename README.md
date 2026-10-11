@@ -1,5 +1,11 @@
 # TipToe
 
+![TipToe on hardware: stands up from a squat, steps, and sits back down to the squat](docs/img/hardware_squat_step_sit.gif)
+
+*Latest hardware flight (2026-10-11): stands up from a stable squat, steps in
+place, then sits back down into the squat. Everything below this GIF dates from
+the September release and has not yet been updated to cover this run.*
+
 **A ¥5700 point-foot biped, trained with PPO in Isaac Lab, built by one
 person working with an AI coding agent. It stands and catch-steps on
 hardware; the longest recordings, 6 and 9 seconds, ended with the robot still
