@@ -21,5 +21,8 @@ abstract: >
   two EL05, a Raspberry Pi 5 and printed parts, with a belt-driven knee. Trained
   with PPO in Isaac Lab and deployed through a Python CAN stack. The repository
   contains the hardware files, the training environment, the deploy stack, the
-  hardware recordings, and a retrospective of every fix needed for the first
-  6 s free-standing balance, built by one person working with an AI coding agent.
+  hardware recordings, and two retrospectives: the fixes needed for the first
+  free-standing balance (2026-09-03), and the campaign that followed it to
+  stand-up from a crouch, stepping and a commanded sit-down (2026-10-11), the two
+  plant corrections that closed sim2real, and the hardware failures that ended it.
+  Built by one person working with an AI coding agent.

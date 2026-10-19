@@ -121,7 +121,7 @@ Smoke results (tool check only, `--de-iters 2` on the knee — NOT the verdict):
 |-------|------------|----|--------|---------|
 | bal_101_braced | unpinned (ref) | 0.952 | I_app 34.9e-3 = 1.64× pinned; g1 −1.086 | — |
 | bal_101_braced | H-friction | 0.895 | C 0.13, b 0.21 | contradicted |
-| bal_101_braced | H-tscale | 0.952 | s 0.61; |g1|/URDF = 0.73 (gravity says s ≈ 1.19) | contradicted |
+| bal_101_braced | H-tscale | 0.952 | s 0.61; \|g1\|/URDF = 0.73 (gravity says s ≈ 1.19) | contradicted |
 | bal_101_braced | H-delay | 0.474 | best T 5 ms (R² 0.18 at T = 0) | contradicted |
 | bal_102_hipclamped | unpinned (ref) | 0.986 | I_app 22.5e-3 = 4.06× pinned | — |
 | bal_102_hipclamped | H-friction | 0.625 | C 0.25, b 0.18 | contradicted |

@@ -38,16 +38,22 @@ the knee axle through an HTD 5M belt inside the thigh, so:
   (`control/motor_bridge.py`); the sim models the drivetrain
   (`RL/.../belt_knee_actuator.py`).
 
-Known weakness: the belt skips a tooth under catch-step loads (6.5–12.6 Nm
-joint-side measured). Every skip shifts the knee zero by 0.21 rad and the
-motor-side encoder cannot see it. Mitigations tried or planned are listed in
-the retrospective §5. If you build one: aluminium pulleys, a wider belt, or a
-knee-side encoder are the obvious upgrades. Belt length and width:
-**TODO(owner)** from the v2.7 assembly.
+Known weakness: the drive has **no margin**. At the 17 Nm motor clamp the belt sees
+~970 N against the ~780 N a 10 mm belt is rated for. It skips a tooth under
+catch-step and stand-up loads (6.5–12.6 Nm joint-side measured in September), and on
+2026-10-16 a belt lost 3 of its 7 steel cords at the 22T pulley; a fresh belt broke
+the same way within two trials. Every skip shifts the knee zero by 0.21 rad and the
+motor-side encoder cannot see it. The idler pulley added on 10-11 (pressing the belt
+onto the 22T) bought one session and is **not** a fix. The owner's redesign — 33:45
+pulleys (the same 0.7333 ratio), a 20 mm HTD 5M belt, no idler — was decided on
+10-16 and is not published yet. Build that, or aluminium pulleys, or a knee-side
+encoder, before flying this drive hard; the 22:30 version in these files is the one
+that failed.
 
 Tension check used in the campaign: pluck the belt and listen for the ~140 Hz
 floor; re-zero the knees at the crawl pose before every session
-(`control/setzero_crawl.py`).
+(`control/setzero_crawl.py`), and read the crawl-pose knee angles between every
+trial — 1 tooth = 12°.
 
 ## 4. Feet
 
@@ -71,8 +77,10 @@ nominal toe point (this matters for any centre-of-mass argument, see
   read by `control/imu_driver_6_400hz.py`. It is mounted rotated 180° about z;
   the sign constants in `control/config.py` encode that. Verify with
   `control/imu_sign_check.py` and `docs/imu-sign-check.md` after mounting
-  yours. The measured pitch mounting offset is about −0.03; the +0.089 trim in
-  the config is **not** a mounting correction (see the README's open problems).
+  yours. The measured pitch mounting offset is about −0.03. The +0.089 trim in the
+  released config is **not** a mounting correction — it was the plant-gap compensator
+  the September policy needed and is retired; the bias was re-measured on 09-20
+  (−0.013) and every flight since 09-30 used trim −0.015 (retrospective II §0).
 - **Radio**: ELRS receiver, CRSF on `/dev/ttyAMA2` at 420000 baud; arms the
   RC loop in `control/main.py`. The bench script `balance_log.py` does not
   need it.

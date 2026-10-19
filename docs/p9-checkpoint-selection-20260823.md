@@ -243,7 +243,7 @@ full-DR survival slightly (+1.4–2.4 %), but hw-matched survival remains
   `--out_json`, and the `hw_matched` / `hw_harsh_arm13` scenarios.
   **One scenario per process** — Isaac Sim hangs on a second env build in
   the same process (cost us 2 h; now documented in the eval.py header).
-- Driver: [RL/run_eval_p9sel_GPU2.ps1](../RL/run_eval_p9sel_GPU2.ps1)
+- Driver: [RL/run_eval_p9sel_GPU2.ps1](../legacy/launch/run_eval_p9sel_GPU2.ps1)
   (`CUDA_VISIBLE_DEVICES=2`; skips any (ckpt, scenario) whose JSON exists —
   delete a JSON to re-run; add a manifest entry + re-run to eval a new
   checkpoint). Full 28-pair sweep took ~61 min.
@@ -267,7 +267,7 @@ full-DR survival slightly (+1.4–2.4 %), but hw-matched survival remains
 Eval of the P13 robustness arms (R1_robust, R3_r1plus, and their 08-27
 tightened-PPO resumes) against the flown K4b_3600 baseline, for the
 quick hardware test of 08-27. Run on GPU 2 via
-[RL/run_eval_p13r_GPU2.ps1](../RL/run_eval_p13r_GPU2.ps1), results in
+[RL/run_eval_p13r_GPU2.ps1](../legacy/launch/run_eval_p13r_GPU2.ps1), results in
 `RL/logs/eval_p13r/`.
 
 ### Protocol changes vs the §3 sweep — do not mix the tables

@@ -32,6 +32,9 @@ logs/
 !reports/**/*.png
 !hardware/img/*.png
 !docs/img/*.png
+!docs/figs/**/*.png
+!data/*/figs/*.png
+!data/s11_pi_latency_20261010/bench.json
 *.gif
 !docs/img/*.gif
 *.mp4
